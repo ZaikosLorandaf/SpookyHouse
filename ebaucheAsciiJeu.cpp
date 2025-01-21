@@ -94,7 +94,7 @@ const char *maze =
 
 void resetScreen(){
    for(int i=0; i<120*30; i++){
-      screen[i] = '.';
+      screen[i] = ' ';
    }
 };
 
@@ -119,7 +119,7 @@ void displayScreen(){
 
 void gameLoop(Joueur joueur){
    resetScreen();
-//   system("cls"); //causes flickering, but ensures the 30 x 120 stays 30 x 120 (terminal format, non-fullscreen.
+   system("cls"); //causes flickering, but ensures the 30 x 120 stays 30 x 120 (terminal format, non-fullscreen.
    updateScreen(joueur);
    displayScreen();
 };
