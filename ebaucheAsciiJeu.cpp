@@ -1,175 +1,174 @@
-//if its stupid but works then it isn't stupid
+// if its stupid but works then it isn't stupid
 //~someone wiser than me
 
+#include <cstdio>
 #include <iostream>
+
+#ifdef _WIN32
 #include <conio.h>
-#include <string.h>
+#else
+#include <stdio.h>
+#include <termios.h>
+#include <unistd.h>
+static void init_direct_mode() {
+  struct termios tio;
+  tcgetattr(STDIN_FILENO, &tio);
+  cfmakeraw(&tio);
+  tcsetattr(STDIN_FILENO, TCSANOW, &tio);
+}
+
+static inline int getch() { return getc(stdin); }
+#endif
+
+static const char *const clear_sequence = "\033[2J\033[1;1H";
+
 using namespace std;
 
-const int W = 119;
-const int S = 115;
-const int D = 100;
-const int A = 97;
-const int E = 101;
-const int C = 99;
+const int W = 'w';
+const int S = 's';
+const int D = 'd';
+const int A = 'a';
+const int E = 'e';
+const int C = 'c';
 
-char screen[120*30];
-	
-struct Ancrage{
-   int x;
-   int y;
+char screen[120 * 30 + 1] = {0};
+
+typedef struct {
+  int x;
+  int y;
+} Coordinates;
+
+typedef enum {
+  Up,
+  Down,
+  Left,
+  Right,
+} Move;
+
+static const char *const title_screen_logo =
+    "\033[2J\033[1H\033[25l"
+    " _____ _____ _____ _____ _____ _____    _____ _____ _____ _____ "
+    "_____\033[2H"
+    "|   __|   __|     |  _  |  _  |   __|  |   __|   __| __  |   __|   "
+    "__|\033[3H"
+    "|   __|__   |   --|     |   __|   __|  |__   |   __|    -|  |  |   "
+    "__|\033[4H"
+    "|_____|_____|_____|__|__|__|  |_____|  "
+    "|_____|_____|__|__|_____|_____|\033[5H";
+
+void print_title_screen() {
+  cout << title_screen_logo << "\nPress any key to play." << endl;
 };
 
-class Joueur{
+static const Coordinates maze_dimen = {60, 14};
+static const Coordinates win_condition = {13, 59};
+static const char *const maze[] = {
+    "    #########################################################",
+    "         #     #                 #              #        #  #",
+    "####  #  #  #  #  ####  #  #  #############  #######  ####  #",
+    "#     #     #  #  #  #  #  #  #     #           #        #  #",
+    "#  #  #  ##########  #  #######  #######  #  ####  ####  #  #",
+    "#  #  #     #        #        #  #  #     #  #     #  #     #",
+    "####  #  #  #  #######  #######  #  #######  ####  #  #  #  #",
+    "#     #  #  #     #                 #           #  #     #  #",
+    "#  #######  ####  #  ####  #############  #  #  ####  #  #  #",
+    "#        #     #        #     #     #     #  #        #  #  #",
+    "#  ##########  ####  #######  #  #######  #  ################",
+    "#     #        #        #                 #  #     #  #     #",
+    "#  #  #######  ####  ##########  ##########  ####  #  #  ####",
+    "#  #  #                 #        #                           ",
+    "#############################################################"};
 
-   
-public:
-	Ancrage ancrage;
-	char str = 'o';
-	Joueur(int x, int y);
-	Bouger(int dir);
-	int plusRecentMouvement;
+void resetScreen() {
+  for (int i = 0; i < 120 * 30; i++) {
+    screen[i] = ' ';
+  }
 };
 
-Joueur::Bouger(int d){
-	plusRecentMouvement = d;
-	switch(d){
-		case -1: //haut
-			if(ancrage.y+1 <30){
-				ancrage.y = ancrage.y + 1;
-			}
-			break;
-		case 2: //gauche
-			ancrage.x = ancrage.x - 1;
-			break;
-		case 1: //bas
-			if(ancrage.y-1 >0){
-				ancrage.y = ancrage.y - 1;
-			}
-			break;
-		case -2: //droite
-			ancrage.x = ancrage.x + 1;
-			break;
-	}
-	return 0;
-};
+static bool is_move_valid(const Coordinates *player_coordinate) {
+  bool not_out_of_bounds =
+      player_coordinate->x >= 0 && player_coordinate->x <= maze_dimen.x &&
+      player_coordinate->y >= 0 && player_coordinate->y <= maze_dimen.y;
+  if (!not_out_of_bounds)
+    return false;
+  return maze[player_coordinate->y][player_coordinate->x] != '#';
+}
 
-Joueur::Joueur(int x, int y){
-   ancrage.x = x;
-   ancrage.y = y;
-};
+static void move_player(char key_presed, Coordinates *player_coordinate) {
+  Coordinates new_coord = *player_coordinate;
+  switch (key_presed) {
+  case 'W':
+  case 'w':
+    new_coord.y--;
+    break;
+  case 'S':
+  case 's':
+    new_coord.y++;
+    break;
+  case 'A':
+  case 'a':
+    new_coord.x--;
+    break;
+  case 'D':
+  case 'd':
+    new_coord.x++;
+    break;
+  default:
+    return;
+  }
+  if (is_move_valid(&new_coord))
+    *player_coordinate = new_coord;
+}
 
-////////
+static bool should_quit(char key_presed, const Coordinates *player_coordinate) {
+  switch (key_presed) {
+  case 'Q':
+  case 'q':
+    return true;
+  default:
+    return false;
+  }
+}
 
-void titleScreen(){
-cout <<
-" _____ _____ _____ _____ _____ _____    _____ _____ _____ _____ _____ " << endl <<
-"|   __|   __|     |  _  |  _  |   __|  |   __|   __| __  |   __|   __|" << endl <<
-"|   __|__   |   --|     |   __|   __|  |__   |   __|    -|  |  |   __|" << endl <<
-"|_____|_____|_____|__|__|__|  |_____|  |_____|_____|__|__|_____|_____|" << endl << endl <<
+static void update_screen(const Coordinates *player_coordinate) {
+  char buff[20];
+  const int x = player_coordinate->x + 1;
+  const int y = player_coordinate->y + 1;
+  sprintf(buff, "\033[%d;%dHo\033[1H", y, x);
+  cout << clear_sequence;
+  for (size_t i = 0; i <= maze_dimen.y; i++)
+    cout << maze[i] << "\033[" << i + 2 << 'H';
+  cout << buff;
+}
 
-"Press any key to play." << endl;
+int main() {
 
+#ifndef _WIN32
+  init_direct_mode();
+#endif
+  print_title_screen();
 
-                                                                                                                          
-};
+  // code de couleur. je voulais ajouter une cle pis une porte mais
+  // trop complique a mon gout. mais je laisse ca ici au cas ou
 
-//POURQUOI TU PRENDS UNE ETOILE AAAAA
-const char *maze =
-"    #########################################################"
-"         #     #                 #              #        #  #"
-"####  #  #  #  #  ####  #  #  #############  #######  ####  #"
-"#     #     #  #  #  #  #  #  #     #           #        #  #"
-"#  #  #  ##########  #  #######  #######  #  ####  ####  #  #"
-"#  #  #     #        #        #  #  #     #  #     #  #     #"
-"####  #  #  #  #######  #######  #  #######  ####  #  #  #  #"
-"#     #  #  #     #                 #           #  #     #  #"
-"#  #######  ####  #  ####  #############  #  #  ####  #  #  #"
-"#        #     #        #     #     #     #  #        #  #  #"
-"#  ##########  ####  #######  #  #######  #  ################"
-"#     #        #        #                 #  #     #  #     #"
-"#  #  #######  ####  ##########  ##########  ####  #  #  ####"
-"#  #  #                 #        #                           "
-"#############################################################";
+  //	cout << "\033[32mThis is green text";
+  //	cout << "\033[34mThis is blue text";
+  //	cout << "\033[37mThis is white text";
 
-void resetScreen(){
-   for(int i=0; i<120*30; i++){
-      screen[i] = ' ';
-   }
-};
+  Coordinates player_coordinate = {0, 0};
+  while (true) {
+    char user_input = getch();
+    if (should_quit(user_input, &player_coordinate))
+      break;
 
+    move_player(user_input, &player_coordinate);
+    update_screen(&player_coordinate);
+    if (player_coordinate.x == win_condition.x &&
+        player_coordinate.y == win_condition.y) {
+      cout << clear_sequence << "you won!" << "\033[2H";
+      break;
+    }
+  }
 
-
-void updateScreen(Joueur joebama){
-	for(int i=0; i<15; i++){
-		for(int j=0; j<61; j++){
-			screen[120*i+j]= maze[j+i*61];
-		}
-	}
-	screen[joebama.ancrage.x + joebama.ancrage.y*120] = 'o';
-};
-
-void displayScreen(){
-	cout << screen;
-	if(screen[120*13+60] == 'o'){
-		system("cls");
-		cout << "You win!" <<endl;
-	}
-};
-
-void gameLoop(Joueur joueur){
-   resetScreen();
-   system("cls"); //causes flickering, but ensures the 30 x 120 stays 30 x 120 (terminal format, non-fullscreen.
-   updateScreen(joueur);
-   displayScreen();
-};
-
-Joueur joe(0,0);
-
-int main(){
-   
-	titleScreen();
-
-// code de couleur. je voulais ajouter une cle pis une porte mais
-// trop complique a mon gout. mais je laisse ca ici au cas ou
-
-//	cout << "\033[32mThis is green text";
-//	cout << "\033[34mThis is blue text";
-//	cout << "\033[37mThis is white text";
-
-  
-	while(true){
-	   int a = getch();
-
-	   if(a == C){
-//		   return 0; //to close the game. unnecessary because theres a huge X button up to the right
-	   }
-	   //this is not smart but it works. please forgive me
-	   if(a == A){
-		   if(maze[joe.ancrage.x + joe.ancrage.y*61 -1] != '#'){
-			   joe.Bouger(2);
-           }
-		   
-	   }
-	   if(a == S){
-		   if(maze[joe.ancrage.x + joe.ancrage.y*61 +61] != '#'){
-			   joe.Bouger(-1);
-           }
-	   }
-	   if(a == D){
-		   if(maze[joe.ancrage.x + joe.ancrage.y*61 +1] != '#'){
-			   joe.Bouger(-2);
-           }
-	   }
-	   if(a == W){
-		   if(maze[joe.ancrage.x + joe.ancrage.y*61 -61] != '#'){
-			   joe.Bouger(1);
-           }
-	   }
-	   gameLoop(joe); 
-   }
-   
-   
-   
-   return 0;
+  return 0;
 };
