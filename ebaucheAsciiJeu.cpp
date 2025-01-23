@@ -24,19 +24,12 @@ static const char *const clear_sequence = "\033[2J\033[1;1H";
 
 using namespace std;
 
-const int W = 'w';
-const int S = 's';
-const int D = 'd';
-const int A = 'a';
-const int E = 'e';
-const int C = 'c';
-
-char screen[120 * 30 + 1] = {0};
-
 typedef struct {
   int x;
   int y;
 } Coordinates;
+
+static const Coordinates origin = {0, 0};
 
 typedef enum {
   Up,
@@ -56,6 +49,9 @@ static const char *const title_screen_logo =
     "|_____|_____|_____|__|__|__|  |_____|  "
     "|_____|_____|__|__|_____|_____|\033[5H";
 
+static void move_cursor(const Coordinates *coord) {
+  cout << "\033[" << coord->y + 1 << ';' << coord->x + 1 << 'H';
+}
 void print_title_screen() {
   cout << title_screen_logo << "\nPress any key to play." << endl;
 };
@@ -79,12 +75,6 @@ static const char *const maze[] = {
     "#  #  #                 #        #                           ",
     "#############################################################"};
 
-void resetScreen() {
-  for (int i = 0; i < 120 * 30; i++) {
-    screen[i] = ' ';
-  }
-};
-
 static bool is_move_valid(const Coordinates *player_coordinate) {
   bool not_out_of_bounds =
       player_coordinate->x >= 0 && player_coordinate->x <= maze_dimen.x &&
@@ -94,7 +84,7 @@ static bool is_move_valid(const Coordinates *player_coordinate) {
   return maze[player_coordinate->y][player_coordinate->x] != '#';
 }
 
-static void move_player(char key_presed, Coordinates *player_coordinate) {
+static bool move_player(char key_presed, Coordinates *player_coordinate) {
   Coordinates new_coord = *player_coordinate;
   switch (key_presed) {
   case 'W':
@@ -114,10 +104,13 @@ static void move_player(char key_presed, Coordinates *player_coordinate) {
     new_coord.x++;
     break;
   default:
-    return;
+    return false;
   }
-  if (is_move_valid(&new_coord))
+  if (is_move_valid(&new_coord)) {
     *player_coordinate = new_coord;
+    return true;
+  }
+  return false;
 }
 
 static bool should_quit(char key_presed, const Coordinates *player_coordinate) {
@@ -130,16 +123,27 @@ static bool should_quit(char key_presed, const Coordinates *player_coordinate) {
   }
 }
 
-static void update_screen(const Coordinates *player_coordinate) {
-  char buff[20];
-  const int x = player_coordinate->x + 1;
-  const int y = player_coordinate->y + 1;
-  sprintf(buff, "\033[%d;%dHo\033[1H", y, x);
-  cout << clear_sequence;
-  for (size_t i = 0; i <= maze_dimen.y; i++)
-    cout << maze[i] << "\033[" << i + 2 << 'H';
-  cout << buff;
+static void print_maze() {
+  for (size_t i = 0; i <= maze_dimen.y; i++) {
+    cout << maze[i];
+    Coordinates c = {0, ((int)i) + 1};
+    move_cursor(&c);
+  }
 }
+
+static void remove_player_char(const Coordinates *player_coord) {
+  move_cursor(player_coord);
+  cout << ' ';
+  move_cursor(&origin);
+}
+
+static void print_player_char(const Coordinates *player_coord) {
+  move_cursor(player_coord);
+  cout << 'o';
+  move_cursor(&origin);
+}
+
+static void clear_screen() { cout << "\033[2J\033[1H"; }
 
 int main() {
 
@@ -147,7 +151,8 @@ int main() {
   init_direct_mode();
 #endif
   print_title_screen();
-
+  getch();
+  clear_screen();
   // code de couleur. je voulais ajouter une cle pis une porte mais
   // trop complique a mon gout. mais je laisse ca ici au cas ou
 
@@ -155,14 +160,18 @@ int main() {
   //	cout << "\033[34mThis is blue text";
   //	cout << "\033[37mThis is white text";
 
-  Coordinates player_coordinate = {0, 0};
+  Coordinates player_coordinate = origin;
+  print_maze();
+  print_player_char(&player_coordinate);
   while (true) {
     char user_input = getch();
     if (should_quit(user_input, &player_coordinate))
       break;
-
-    move_player(user_input, &player_coordinate);
-    update_screen(&player_coordinate);
+    Coordinates old_player = player_coordinate;
+    if (move_player(user_input, &player_coordinate)) {
+      remove_player_char(&old_player);
+      print_player_char(&player_coordinate);
+    }
     if (player_coordinate.x == win_condition.x &&
         player_coordinate.y == win_condition.y) {
       cout << clear_sequence << "you won!" << "\033[2H";
