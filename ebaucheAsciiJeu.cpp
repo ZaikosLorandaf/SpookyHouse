@@ -57,7 +57,7 @@ void print_title_screen() {
 };
 
 static const Coordinates maze_dimen = {60, 14};
-static const Coordinates win_condition = {13, 59};
+static const Coordinates win_condition = {60, 13};
 static const char *const maze[] = {
     "    #########################################################",
     "         #     #                 #              #        #  #",
