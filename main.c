@@ -1,41 +1,27 @@
 // if its stupid but works then it isn't stupid
 //~someone wiser than me
 
-#include <cstdio>
-#include <iostream>
+#include "headers/coord.h"
+#include "headers/display.h"
+#include "headers/init.h"
+#include <stdbool.h>
+#include <stdio.h>
 
 #ifdef _WIN32
 #include <conio.h>
 #else
-#include <stdio.h>
-#include <termios.h>
-#include <unistd.h>
-static void init_direct_mode() {
-  struct termios tio;
-  tcgetattr(STDIN_FILENO, &tio);
-  cfmakeraw(&tio);
-  tcsetattr(STDIN_FILENO, TCSANOW, &tio);
-}
-
 static inline int getch() { return getc(stdin); }
 #endif
 
 static const char *const clear_sequence = "\033[2J\033[1;1H";
 
-using namespace std;
-
-typedef struct {
-  int x;
-  int y;
-} Coordinates;
-
 static const Coordinates origin = {0, 0};
 
 typedef enum {
-  Up,
-  Down,
-  Left,
-  Right,
+  up,
+  down,
+  left,
+  right,
 } Move;
 
 static const char *const title_screen_logo =
@@ -49,11 +35,8 @@ static const char *const title_screen_logo =
     "|_____|_____|_____|__|__|__|  |_____|  "
     "|_____|_____|__|__|_____|_____|\033[5H";
 
-static void move_cursor(const Coordinates *coord) {
-  cout << "\033[" << coord->y + 1 << ';' << coord->x + 1 << 'H';
-}
 void print_title_screen() {
-  cout << title_screen_logo << "\nPress any key to play." << endl;
+  printf("%s%s", title_screen_logo, "\npress any key to play.");
 };
 
 static const Coordinates maze_dimen = {60, 14};
@@ -123,33 +106,8 @@ static bool should_quit(char key_presed, const Coordinates *player_coordinate) {
   }
 }
 
-static void print_maze() {
-  for (size_t i = 0; i <= maze_dimen.y; i++) {
-    cout << maze[i];
-    Coordinates c = {0, ((int)i) + 1};
-    move_cursor(&c);
-  }
-}
-
-static void remove_player_char(const Coordinates *player_coord) {
-  move_cursor(player_coord);
-  cout << ' ';
-  move_cursor(&origin);
-}
-
-static void print_player_char(const Coordinates *player_coord) {
-  move_cursor(player_coord);
-  cout << 'o';
-  move_cursor(&origin);
-}
-
-static void clear_screen() { cout << "\033[2J\033[1H"; }
-
 int main() {
-
-#ifndef _WIN32
   init_direct_mode();
-#endif
   print_title_screen();
   getch();
   clear_screen();
@@ -161,7 +119,7 @@ int main() {
   //	cout << "\033[37mThis is white text";
 
   Coordinates player_coordinate = origin;
-  print_maze();
+  print_maze(maze, &maze_dimen);
   print_player_char(&player_coordinate);
   while (true) {
     char user_input = getch();
@@ -174,10 +132,10 @@ int main() {
     }
     if (player_coordinate.x == win_condition.x &&
         player_coordinate.y == win_condition.y) {
-      cout << clear_sequence << "you won!" << "\033[2H";
+      printf("%s%s%s", clear_sequence, "you won!", "\033[2H");
       break;
     }
   }
-
+  reset_term();
   return 0;
 };
