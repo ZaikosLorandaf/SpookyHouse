@@ -364,7 +364,7 @@ if(interactingLock){
 	}
     
   }
-}
+} // exit
 	clear_screen();
   return 0;
 };
