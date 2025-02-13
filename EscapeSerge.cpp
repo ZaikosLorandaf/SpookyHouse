@@ -262,7 +262,7 @@ void changerSelectionCadenas(int signe){
 
 //Verifier la combinaison du cadenas
 void verifierCombinaisonCadenas(){
-	Coordinates b = {1, 15};
+	Coordinates b = {1, 20};
 	move_cursor(&b);
 	if(Cadenas[0] == 1 && Cadenas[1] == 2 && Cadenas[2] == 3 && Cadenas[3] == 4){		
 		unlocked = true;
