@@ -24,6 +24,10 @@ static const char *const clear_sequence = "\033[2J\033[1;1H";
 
 using namespace std;
 
+///////////////////////////////////////////////////////////////////////
+// VARIABLES
+///////////////////////////////////////////////////////////////////////
+
 typedef struct {
   int x;
   int y;
@@ -72,10 +76,11 @@ static const char *const maze[] = {
     "#  ##########  ####  #######  #  #######  #  ################",
     "#     #        #        #                 #  #     #  #     #",
     "#  #  #######  ####  ##########  ##########  ####  #  #  ####",
-    "#  #  #                 #        #                           ",
-    "#############################################################"};
+    "#  #  #                 #        #                       @   ",
+    "#############################################################"
+    };
     
-const char* cadenas4ChiffresOuvert[] = {
+const char* cadenasOuvert[] = {
 "     .--------.                ",
 "    / .------. \\               ",
 "   / /        \\ \\              ",
@@ -91,7 +96,7 @@ const char* cadenas4ChiffresOuvert[] = {
 "           '.________________.'"
 };
 
-Coordinates cadenas4ChiffresOuvertC = {32, 13};
+Coordinates cadenasOuvertC = {32, 13};
 
 
 const char* cadenas4ChiffresFerme[] = {
@@ -109,14 +114,44 @@ const char* cadenas4ChiffresFerme[] = {
 "'.____'.____.'____.'",
 "'.________________.'"
 };
-
-bool interactingLock = false;
-bool unlocked = false;
-
+bool unlocked = false; //cadenas 4 chiffres
 Coordinates cadenas4ChiffresFermeC = {20, 13};
-
 int selectionCadenas = 3;
 int Cadenas[4] = {};
+
+
+const char* cadenasTournerFerme[] = {
+"     .--------.     ",
+"    / .------. \\    ",
+"   / /        \\ \\   ",
+"   | |        | |   ",
+"  _| |________| |_  ",
+".' |_|        |_| '.",
+"'._____ ____ _____.'",
+"|     .'____'.     |",
+"'.__.'.'    '.'.__.'",
+"'.__  |  00  |  __.'",
+"|   '.'.____.'.'   |",
+"'.____'.____.'____.'",
+"'.________________.'"
+};
+bool unlocked2 = false; //cadenas cercle
+Coordinates cadenasCirculaireFermeC = {20, 13};
+int combinaisonCirculaire[3] = {};
+int directionPast = 1;
+int nombreActuel = 100; //100 n'est pas un chiffre atteignable normalement je l'utilise pour la premiere verification
+int slotCadenasCirculaire = 0;
+
+
+
+int modeInteraction = 0; //0: mouvement, 1: cadenas4, 2: cadenasTourner
+
+
+
+
+///////////////////////////////////////////////////////////////////////
+// FONCTIONS DIVERSES
+///////////////////////////////////////////////////////////////////////
 
 //Verification que le joueur peut aller ou il veut aller
 static bool is_move_valid(const Coordinates *player_coordinate) {
@@ -165,7 +200,14 @@ static bool move_player(char key_presed, Coordinates *player_coordinate) {
 				  *player_coordinate = new_coord;
 				  return true;
 			  }
-			  interactingLock = true;
+			  modeInteraction = 1;
+		  }
+		  else if(maze[new_coord.y][new_coord.x] == '@'){
+			  if(unlocked2){
+				  *player_coordinate = new_coord;
+				  return true;
+			  }
+			  modeInteraction = 2;
 		  }
 		  return false;
 	  }
@@ -186,7 +228,7 @@ static bool should_quit(char key_presed, const Coordinates *player_coordinate) {
 }
 //Imprimer labyrinthe (au debut et suite de jeux)
 static void print_maze() {
-  for (size_t i = 0; i <= maze_dimen.y; i++) {
+  for (int i = 0; i <= maze_dimen.y; i++) {
     cout << maze[i];
     Coordinates c = {0, ((int)i) + 1};
     move_cursor(&c);
@@ -207,6 +249,10 @@ static void print_player_char(const Coordinates *player_coord) {
 
 static void clear_screen() { cout << "\033[2J\033[1H"; }
 
+///////////////////////////////////////////////////////////////////////
+// FONCTIONS DU CADENAS 4 CHIFFRES
+///////////////////////////////////////////////////////////////////////
+
 //Afficher un cadenas 4 chiffres ferme
 void afficherCadenasFerme(){
 	clear_screen();
@@ -220,8 +266,8 @@ void afficherCadenasFerme(){
 //Une fois le cadenas 4 chiffres ouvert,
 void afficherCadenasOuvert(){
 	clear_screen();
-	for(int i=0; i<cadenas4ChiffresOuvertC.y; i++){
-		cout << cadenas4ChiffresOuvert[i];
+	for(int i=0; i<cadenasOuvertC.y; i++){
+		cout << cadenasOuvert[i];
 		Coordinates c = {0, ((int)i) + 1};
 		move_cursor(&c);
 	}
@@ -233,8 +279,6 @@ void updateCadenasFerme(){
 	for(int i=0; i<4; i++){
 		cout << Cadenas[i];
 	}
-	
-	
 }
 //Changer les chiffres du cadenas 4 chiffres
 void changerChiffreCadenas(int signe){
@@ -248,6 +292,7 @@ void changerChiffreCadenas(int signe){
 	}
 	updateCadenasFerme();
 }
+
 //Changer le chiffre qu'on modifie du cadenas 4 chiffres
 void changerSelectionCadenas(int signe){
 	selectionCadenas += signe;
@@ -275,68 +320,14 @@ void verifierCombinaisonCadenas(){
 }
 //Quand le joueur veut sortir du cadenas
 void sortirCadenas(Coordinates *coord){
-	interactingLock = false;
+	modeInteraction = 0;
 	clear_screen();
 	print_maze();
 	print_player_char(coord);
 }
 
-
-
-
-int main() {
-
-#ifndef _WIN32
-  init_direct_mode();
-#endif
-  print_title_screen();
-  getch();
-  clear_screen();
-  // code de couleur. je voulais ajouter une cle pis une porte mais
-  // trop complique a mon gout. mais je laisse ca ici au cas ou
-
-  //	cout << "\033[32mThis is green text";
-  //	cout << "\033[34mThis is blue text";
-  //	cout << "\033[37mThis is white text";
-
-  Coordinates player_coordinate = origin;
-  print_maze();
-  print_player_char(&player_coordinate);
-  
-	//initialisation du cadenas a 4 chiffres
-  for(int i=0; i<4; i++){
-	  Cadenas[i] = 0;
-  }
-  
-	//loop
-  while (true) {
-    char user_input = getch();
-    
-    if (should_quit(user_input, &player_coordinate))
-      break;
-      
-	//mode de navigation normal du labyrinthe
-if(!interactingLock){      
-    Coordinates old_player = player_coordinate;
-    if (move_player(user_input, &player_coordinate)) {
-      remove_player_char(&old_player);
-      print_player_char(&player_coordinate);
-    }
-    if (player_coordinate.x == win_condition.x &&
-        player_coordinate.y == win_condition.y) {
-      cout << clear_sequence << "you won!" << "\033[2H";
-      break;
-    }
-}    
-    
-    //si dans l'interface cadenas
-if(interactingLock){
-	if(unlocked){ //this is hacky
-		sortirCadenas(&player_coordinate);
-		user_input = 'c'; 
-	}
-	afficherCadenasFerme();
-    switch (user_input){
+void lockInteraction(char key, Coordinates* player_coordinate){
+	switch (key){
 		case 'W':
 		case 'w':
 			changerChiffreCadenas(1);
@@ -359,12 +350,202 @@ if(interactingLock){
 			break;
 		case 'C':
 		case 'c':
-			sortirCadenas(&player_coordinate);
+			sortirCadenas(player_coordinate);
 			break;
 	}
-    
+}
+
+///////////////////////////////////////////////////////////////////////
+// FONCTIONS DU CADENAS CIRCULAIRE
+///////////////////////////////////////////////////////////////////////
+
+void afficherCadenasCirculaireFerme(){
+	clear_screen();
+	for(int i=0; i<cadenasCirculaireFermeC.y; i++){
+		cout << cadenasTournerFerme[i];
+		Coordinates c = {0, i + 1};
+		move_cursor(&c);
+	}
+	cout << endl << "A : Tourner antihoraire"<< endl << "D : Tourner horaire" << endl << "E : Valider la combinaison" << endl << "C : Sortir" << endl << endl << "Mode d'utilisation : tourner en sens horaire jusqu'au premier chiffre, ensuite antihoraire jusqu'au second et ensuite horaire jusqu'au troisieme." << endl;
+}
+
+void afficherCadenasCirculaireOuvert(){
+	clear_screen();
+	for(int i=0; i<cadenasOuvertC.y; i++){
+		cout << cadenasOuvert[i];
+		Coordinates c = {0, ((int)i) + 1};
+		move_cursor(&c);
+	}
+}
+
+void updateCadenasCirculaire(){
+	Coordinates a = {9, 9};
+	move_cursor(&a);
+	if(nombreActuel < 10){
+		cout << '0' << nombreActuel;
+	}
+	else{
+		cout << nombreActuel;
+	}
+}
+
+void tournerCadenasCirculaire(int direction){
+	if (nombreActuel == 100){
+		nombreActuel = -direction; //this is a hack 
+		directionPast = direction;
+	}
+	if (directionPast != direction){
+		combinaisonCirculaire[slotCadenasCirculaire] = nombreActuel;
+		slotCadenasCirculaire += 1;
+	}
+	nombreActuel += direction;
+	directionPast = direction;
+	if (nombreActuel == 40){
+		nombreActuel = 39;
+	}
+	if (nombreActuel == -1){
+		nombreActuel = 39;
+	}
+	updateCadenasCirculaire();
+}
+
+void reinitialiserCombinaison(){
+	for(int i=0; i<3; i++){
+		combinaisonCirculaire[i] = 0;
+	}
+	directionPast = 0;
+	nombreActuel = 100;
+	slotCadenasCirculaire = 0;
+}
+
+void verifierCombinaisonCadenasCirculaire(){
+	combinaisonCirculaire[2] = nombreActuel;
+	int objectif[3] = {10, 5, 20};
+	if (combinaisonCirculaire[0] == objectif[0] &&
+	combinaisonCirculaire[1] == objectif[1] &&
+	combinaisonCirculaire[2] == objectif[2]){ //bonne combinaison
+		afficherCadenasCirculaireOuvert();
+		unlocked2 = true;
+		//succes
+	}
+	else{ //combinaison erronee
+		cout << endl << "mistake" << endl;
+		
+//debugging. je le laisse au cas ou
+//		cout << "mistake";
+//		cout << objectif[0] << objectif[1] << objectif[2] << endl;
+//		cout << combinaisonCirculaire[0] << combinaisonCirculaire[1] << combinaisonCirculaire[2];
+		
+		reinitialiserCombinaison();
+	}
+}
+
+
+
+void sortirCadenasCirculaire(Coordinates *coord){
+	modeInteraction = 0;
+	clear_screen();
+	print_maze();
+	print_player_char(coord);
+	reinitialiserCombinaison();
+}
+
+void interagirCadenasCirculaire(char key, Coordinates* player_coordinate){
+	switch (key){
+		case 'A':
+		case 'a':
+			tournerCadenasCirculaire(-1);
+			break;
+		case 'D':
+		case 'd':
+			tournerCadenasCirculaire(1);
+			break;
+		case 'E':
+		case 'e':
+			verifierCombinaisonCadenasCirculaire();
+			break;
+		case 'C':
+		case 'c':
+			sortirCadenasCirculaire(player_coordinate);
+			break;
+	}
+}
+
+///////////////////////////////////////////////////////////////////////
+// MAIN
+///////////////////////////////////////////////////////////////////////
+
+// code de couleur. je voulais ajouter une cle pis une porte mais
+  // trop complique a mon gout. mais je laisse ca ici au cas ou
+
+  //	cout << "\033[32mThis is green text";
+  //	cout << "\033[34mThis is blue text";
+  //	cout << "\033[37mThis is white text";
+
+int main() {
+
+#ifndef _WIN32
+  init_direct_mode();
+#endif
+  print_title_screen();
+  getch();
+  clear_screen();
+  
+
+  Coordinates player_coordinate = origin;
+  print_maze();
+  print_player_char(&player_coordinate);
+  
+	//initialisation du cadenas a 4 chiffres
+  for(int i=0; i<4; i++){
+	  Cadenas[i] = 0;
   }
-} // exit
+  
+	//loop
+  while (true) {
+    char user_input = getch();
+    
+    if (should_quit(user_input, &player_coordinate))
+      break;
+      
+	//mode de navigation normal du labyrinthe
+if(modeInteraction == 0){      
+    Coordinates old_player = player_coordinate;
+    if (move_player(user_input, &player_coordinate)) {
+      remove_player_char(&old_player);
+      print_player_char(&player_coordinate);
+    }
+    if (player_coordinate.x == win_condition.x &&
+        player_coordinate.y == win_condition.y) {
+      cout << clear_sequence << "you won!" << "\033[2H";
+      break;
+    }
+}    
+    
+    //si dans l'interface cadenas 4 chiffres
+if(modeInteraction == 1){
+	if(unlocked){ //this is hacky
+		sortirCadenas(&player_coordinate);
+		user_input = 'c'; 
+	}
+	afficherCadenasFerme();
+    lockInteraction(user_input, &player_coordinate);
+  }
+
+	  //si dans l'interface cadenas cercle
+if(modeInteraction == 2){
+	if(unlocked2){ //this is hacky
+		sortirCadenas(&player_coordinate);
+		user_input = 'c'; 
+	}
+	afficherCadenasCirculaireFerme();
+    	interagirCadenasCirculaire(user_input, &player_coordinate);
+}  
+
+}
+
+	
+
 	clear_screen();
   return 0;
 };
