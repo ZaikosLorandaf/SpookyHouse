@@ -58,3 +58,11 @@ void print_buffer() {
 #endif
   clear_print_buffer();
 }
+
+bool cpy_bytes_to_buff(const void *restrict src, size_t count) {
+  if (count > (BUFF_SIZE - buff_ptr->size))
+    return false;
+  memcpy(buff_ptr->buff + buff_ptr->size, src, count);
+  buff_ptr->size += count;
+  return true;
+}

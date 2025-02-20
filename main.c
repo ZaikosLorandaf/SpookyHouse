@@ -27,35 +27,19 @@ typedef enum {
   right,
 } Move;
 
-static const Coordinates maze_dimen = {60, 14};
-static const Coordinates win_condition = {60, 13};
-static const char *const maze[] = {
-    "    #########################################################",
-    "         #     #                 #              #        #  #",
-    "####  #  #  #  #  ####  #  #  #############  #######  ####  #",
-    "#     #     #  #  #  #  #  #  #     #           #        #  #",
-    "#  #  #  ##########  #  #######  #######  #  ####  ####  #  #",
-    "#  #  #     #        #        #  #  #     #  #     #  #     #",
-    "####  #  #  #  #######  #######  #  #######  ####  #  #  #  #",
-    "#     #  #  #     #                 #           #  #     #  #",
-    "#  #######  ####  #  ####  #############  #  #  ####  #  #  #",
-    "#        #     #        #     #     #     #  #        #  #  #",
-    "#  ##########  ####  #######  #  #######  #  ################",
-    "#     #        #        #                 #  #     #  #     #",
-    "#  #  #######  ####  ##########  ##########  ####  #  #  ####",
-    "#  #  #                 #        #                           ",
-    "#############################################################"};
-
-static bool is_move_valid(const Coordinates *player_coordinate) {
+static bool is_move_valid(const Coordinates *player_coordinate,
+                          const struct Maze *restrict maze) {
+  const size_t x = player_coordinate->x;
+  const size_t y = player_coordinate->y;
   bool not_out_of_bounds =
-      player_coordinate->x >= 0 && player_coordinate->x <= maze_dimen.x &&
-      player_coordinate->y >= 0 && player_coordinate->y <= maze_dimen.y;
+      x >= 0 && x <= maze->dimen.x && y >= 0 && y <= maze->dimen.y;
   if (!not_out_of_bounds)
     return false;
-  return maze[player_coordinate->y][player_coordinate->x] != '#';
+  return maze->content[x + y * maze->dimen.x] != '#';
 }
 
-static bool move_player(char key_presed, Coordinates *player_coordinate) {
+static bool move_player(char key_presed, Coordinates *player_coordinate,
+                        const struct Maze *restrict maze) {
   Coordinates new_coord = *player_coordinate;
   switch (key_presed) {
   case 'W':
@@ -77,7 +61,7 @@ static bool move_player(char key_presed, Coordinates *player_coordinate) {
   default:
     return false;
   }
-  if (is_move_valid(&new_coord)) {
+  if (is_move_valid(&new_coord, maze)) {
     *player_coordinate = new_coord;
     return true;
   }
@@ -107,8 +91,11 @@ int main() {
   //	cout << "\033[34mThis is blue text";
   //	cout << "\033[37mThis is white text";
 
-  Coordinates player_coordinate = origin;
-  print_maze(maze, &maze_dimen);
+  // print_maze(maze, &maze_dimen);
+  struct Maze maze;
+  assert(read_maze("assets/mazes/main.txt", &maze));
+  print_maze(&maze);
+  Coordinates player_coordinate = maze.entrance;
   print_player_char(&player_coordinate);
   while (true) {
     print_buffer();
@@ -119,12 +106,12 @@ int main() {
       break;
     }
     Coordinates old_player = player_coordinate;
-    if (move_player(user_input, &player_coordinate)) {
+    if (move_player(user_input, &player_coordinate, &maze)) {
       remove_player_char(&old_player);
       print_player_char(&player_coordinate);
     }
-    if (player_coordinate.x == win_condition.x &&
-        player_coordinate.y == win_condition.y) {
+    if (player_coordinate.x == maze.exit.x &&
+        player_coordinate.y == maze.exit.y) {
       format_to_print_buffer("%s%s%s", clear_sequence, "you won!", "\033[2H");
       print_buffer();
       break;

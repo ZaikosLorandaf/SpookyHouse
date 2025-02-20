@@ -1,4 +1,5 @@
 #pragma once
+#include <stddef.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -17,6 +18,8 @@ bool format_to_print_buffer(const char *format, ...)
     __attribute__((format(printf, 1, 2)))
 #endif
     ;
+
+bool cpy_bytes_to_buff(const void *src, size_t count);
 }
 #else
 #include <stdbool.h>
@@ -36,4 +39,6 @@ bool format_to_print_buffer(const char *restrict format, ...)
     __attribute__((format(printf, 1, 2)))
 #endif
     ;
+
+bool cpy_bytes_to_buff(const void *restrict src, size_t count);
 #endif
