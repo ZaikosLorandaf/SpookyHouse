@@ -52,7 +52,7 @@ bool format_to_print_buffer(const char *restrict format, ...) {
 
 void print_buffer() {
 #ifdef _WIN32
-  _fwrite_noblock(buff_ptr->buff, sizeof(char), buff_ptr->size, stdout);
+  fwrite(buff_ptr->buff, sizeof(char), buff_ptr->size, stdout);
 #else
   fwrite_unlocked(buff_ptr->buff, sizeof(char), buff_ptr->size, stdout);
 #endif
