@@ -1,9 +1,12 @@
 // if its stupid but works then it isn't stupid
 //~someone wiser than me
 
+#include "headers/assets.h"
 #include "headers/coord.h"
 #include "headers/display.h"
 #include "headers/init.h"
+#include "headers/print_buffer.h"
+#include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
 
@@ -23,21 +26,6 @@ typedef enum {
   left,
   right,
 } Move;
-
-static const char *const title_screen_logo =
-    "\033[2J\033[1H\033[25l"
-    " _____ _____ _____ _____ _____ _____    _____ _____ _____ _____ "
-    "_____\033[2H"
-    "|   __|   __|     |  _  |  _  |   __|  |   __|   __| __  |   __|   "
-    "__|\033[3H"
-    "|   __|__   |   --|     |   __|   __|  |__   |   __|    -|  |  |   "
-    "__|\033[4H"
-    "|_____|_____|_____|__|__|__|  |_____|  "
-    "|_____|_____|__|__|_____|_____|\033[5H";
-
-void print_title_screen() {
-  printf("%s%s", title_screen_logo, "\npress any key to play.");
-};
 
 static const Coordinates maze_dimen = {60, 14};
 static const Coordinates win_condition = {60, 13};
@@ -108,7 +96,8 @@ static bool should_quit(char key_presed, const Coordinates *player_coordinate) {
 
 int main() {
   init_direct_mode();
-  print_title_screen();
+  init_print_buffer();
+  assert(print_title_screen());
   getch();
   clear_screen();
   // code de couleur. je voulais ajouter une cle pis une porte mais
@@ -122,9 +111,13 @@ int main() {
   print_maze(maze, &maze_dimen);
   print_player_char(&player_coordinate);
   while (true) {
+    print_buffer();
     char user_input = getch();
-    if (should_quit(user_input, &player_coordinate))
+    if (should_quit(user_input, &player_coordinate)) {
+      clear_screen();
+      print_buffer();
       break;
+    }
     Coordinates old_player = player_coordinate;
     if (move_player(user_input, &player_coordinate)) {
       remove_player_char(&old_player);
@@ -132,10 +125,12 @@ int main() {
     }
     if (player_coordinate.x == win_condition.x &&
         player_coordinate.y == win_condition.y) {
-      printf("%s%s%s", clear_sequence, "you won!", "\033[2H");
+      format_to_print_buffer("%s%s%s", clear_sequence, "you won!", "\033[2H");
+      print_buffer();
       break;
     }
   }
   reset_term();
+  destroy_print_buffer();
   return 0;
 };
