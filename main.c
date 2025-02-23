@@ -120,4 +120,4 @@ int main() {
   reset_term();
   destroy_print_buffer();
   return 0;
-};
+}
