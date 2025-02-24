@@ -14,17 +14,17 @@ struct PrintBuffer {
 
 static struct PrintBuffer *restrict buff_ptr = NULL;
 
-void init_print_buffer() {
+void init_print_buffer(void) {
   buff_ptr = malloc(sizeof(struct PrintBuffer));
   buff_ptr->size = 0;
 }
 
-void destroy_print_buffer() {
+void destroy_print_buffer(void) {
   free(buff_ptr);
   buff_ptr = NULL;
 }
 
-void clear_print_buffer() { buff_ptr->size = 0; }
+void clear_print_buffer(void) { buff_ptr->size = 0; }
 
 bool add_to_print_buffer(const char *restrict str) {
   size_t remaining_size = BUFF_SIZE - buff_ptr->size;
@@ -50,7 +50,7 @@ bool format_to_print_buffer(const char *restrict format, ...) {
   return true;
 }
 
-void print_buffer() {
+void print_buffer(void) {
 #ifdef _WIN32
   fwrite(buff_ptr->buff, sizeof(char), buff_ptr->size, stdout);
 #else

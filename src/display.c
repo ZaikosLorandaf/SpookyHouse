@@ -36,4 +36,4 @@ void print_player_char(const Coordinates *restrict player_coord) {
                          player_coord->y + 1, player_coord->x + 1, 1, 1);
 }
 
-void clear_screen() { add_to_print_buffer(CLEAR_SEQUENCE); }
+void clear_screen(void) { add_to_print_buffer(CLEAR_SEQUENCE); }

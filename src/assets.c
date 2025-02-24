@@ -14,7 +14,7 @@
 
 #define MAIN_MAZE_PATH "assets/mazes/main.txt"
 
-bool print_title_screen() {
+bool print_title_screen(void) {
   FILE *f = fopen(TITLE_SCREEN_ASSET_PATH, "r");
   if (f == NULL)
     return false;
@@ -56,7 +56,7 @@ bool read_maze(const char *restrict maze_path, struct Maze *restrict out_maze) {
   }
   out_maze->content =
       malloc(out_maze->dimen.x * out_maze->dimen.y * sizeof(char));
-  for (size_t i = 0; i < out_maze->dimen.y; i++) {
+  for (int i = 0; i < out_maze->dimen.y; i++) {
     if (NULL == fgets(buff, BUFF_SIZE, f)) {
       fclose(f);
       free(out_maze->content);

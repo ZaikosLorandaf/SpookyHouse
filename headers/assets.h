@@ -16,7 +16,7 @@ bool print_title_screen();
 bool read_maze(const char *maze_path, struct Maze *out_maze);
 }
 #else
-bool print_title_screen();
+bool print_title_screen(void);
 
 bool read_maze(const char *restrict maze_path, struct Maze *restrict out_maze);
 #endif

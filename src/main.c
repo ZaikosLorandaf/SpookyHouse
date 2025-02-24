@@ -13,12 +13,12 @@
 #ifdef _WIN32
 #include <conio.h>
 #else
-static inline int getch() { return getc(stdin); }
+static inline int getch(void) { return getc(stdin); }
 #endif
 
 static const char *const clear_sequence = "\033[2J\033[1;1H";
 
-static const Coordinates origin = {0, 0};
+// static const Coordinates origin = {0, 0};
 
 typedef enum {
   up,
@@ -29,8 +29,8 @@ typedef enum {
 
 static bool is_move_valid(const Coordinates *player_coordinate,
                           const struct Maze *restrict maze) {
-  const size_t x = player_coordinate->x;
-  const size_t y = player_coordinate->y;
+  const int x = player_coordinate->x;
+  const int y = player_coordinate->y;
   bool not_out_of_bounds =
       x >= 0 && x <= maze->dimen.x && y >= 0 && y <= maze->dimen.y;
   if (!not_out_of_bounds)
@@ -68,7 +68,7 @@ static bool move_player(char key_presed, Coordinates *player_coordinate,
   return false;
 }
 
-static bool should_quit(char key_presed, const Coordinates *player_coordinate) {
+static bool should_quit(char key_presed) {
   switch (key_presed) {
   case 'Q':
   case 'q':
@@ -78,7 +78,7 @@ static bool should_quit(char key_presed, const Coordinates *player_coordinate) {
   }
 }
 
-int main() {
+int main(void) {
   init_direct_mode();
   init_print_buffer();
   assert(print_title_screen());
@@ -100,7 +100,7 @@ int main() {
   while (true) {
     print_buffer();
     char user_input = getch();
-    if (should_quit(user_input, &player_coordinate)) {
+    if (should_quit(user_input)) {
       clear_screen();
       print_buffer();
       break;

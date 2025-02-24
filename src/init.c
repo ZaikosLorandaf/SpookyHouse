@@ -4,7 +4,7 @@
 
 static struct termios old_tio_i;
 
-void init_direct_mode() {
+void init_direct_mode(void) {
   struct termios tio = {0};
   tcgetattr(STDIN_FILENO, &tio);
   old_tio_i = tio;
@@ -14,7 +14,7 @@ void init_direct_mode() {
   tcsetattr(STDIN_FILENO, TCSANOW, &tio);
 }
 
-void reset_term() { tcsetattr(STDIN_FILENO, TCSADRAIN, &old_tio_i); }
+void reset_term(void) { tcsetattr(STDIN_FILENO, TCSADRAIN, &old_tio_i); }
 
 #else
 

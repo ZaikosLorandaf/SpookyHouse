@@ -18,5 +18,5 @@ void remove_player_char(const Coordinates *restrict player_coord);
 
 void print_player_char(const Coordinates *restrict player_coord);
 
-void clear_screen();
+void clear_screen(void);
 #endif

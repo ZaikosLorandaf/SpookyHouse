@@ -4,9 +4,9 @@
 extern "C" {
 #endif
 
-void init_direct_mode();
+void init_direct_mode(void);
 
-void reset_term();
+void reset_term(void);
 
 #ifdef __cplusplus
 }
