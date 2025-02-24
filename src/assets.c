@@ -1,6 +1,6 @@
-#include "headers/assets.h"
-#include "headers/coord.h"
-#include "headers/print_buffer.h"
+#include "assets.h"
+#include "coord.h"
+#include "print_buffer.h"
 #include <assert.h>
 #include <stddef.h>
 #include <stdio.h>

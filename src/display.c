@@ -1,7 +1,7 @@
-#include "headers/display.h"
-#include "headers/assets.h"
-#include "headers/coord.h"
-#include "headers/print_buffer.h"
+#include "display.h"
+#include "assets.h"
+#include "coord.h"
+#include "print_buffer.h"
 #include <stddef.h>
 
 #define CLEAR_SEQUENCE "\033[2J\033[1;1H"

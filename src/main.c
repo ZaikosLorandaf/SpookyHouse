@@ -1,11 +1,11 @@
 // if its stupid but works then it isn't stupid
 //~someone wiser than me
 
-#include "headers/assets.h"
-#include "headers/coord.h"
-#include "headers/display.h"
-#include "headers/init.h"
-#include "headers/print_buffer.h"
+#include "assets.h"
+#include "coord.h"
+#include "display.h"
+#include "init.h"
+#include "print_buffer.h"
 #include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
