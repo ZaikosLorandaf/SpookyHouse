@@ -9,6 +9,12 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -std=c++17")
 
+if (MSVC)
+    add_compile_options(/W4 /Os)
+else()
+    add_compile_options(-Wall -Wextra -Wpedantic -Os -march=native)
+endif()
+
 file(GLOB_RECURSE sources
         "${CMAKE_SOURCE_DIR}/src/*.c"
         "${CMAKE_SOURCE_DIR}/src/*.cpp"
