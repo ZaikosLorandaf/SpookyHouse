@@ -1,4 +1,5 @@
 #!/bin/sh
-cmake -S . -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=MinSizeRel -B cmake || exit 1
-cd cmake || exit 1
+BUILD_DIR='build'
+cmake -S . -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=MinSizeRel -B "$BUILD_DIR" || exit 1
+cd "$BUILD_DIR" || exit 1
 make
