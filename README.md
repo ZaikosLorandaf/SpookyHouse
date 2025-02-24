@@ -11,7 +11,8 @@ Let's be the best once again!!
 
 ## Build on Linux
 
-Run the following script *inside the project directory* to build the project and generate clangd LSP config
+Run the following script *inside the project directory* to build the project and
+generate clangd LSP config
 
 ```sh
 ./build.sh
@@ -32,4 +33,5 @@ Do whatever VisualStudio does
 ## Troubleshooting
 
 - Project crashes due to a failed assertion in some part of the code I don't know!
-- Make sure you run the executable from the main directory, otherwise the asset load will fail
+- Make sure you run the executable from the main directory, otherwise the asset
+  load will fail
