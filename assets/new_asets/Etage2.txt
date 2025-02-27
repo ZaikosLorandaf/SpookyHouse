@@ -1,15 +1,13 @@
-INDICE
-!=Indice2.txt
-$=Indice3.txt
-&=Indice4.txt
-OBJECT
-}=key1
-MAP
-1=Etage1.txt
-CADENAS
-X=Cadenas2.txt
-Y=Cadenas3.txt
-Z=Cadeans4.txt
+HINT ! Indice2.txt
+HINT $ Indice3.txt
+HINT & Indice4.txt
+HINT - Indice5.txt
+OBJECT } key1
+MAP 1 Etage1.txt
+MAP 2 Etage3.txt
+LOCK X Cadenas2.txt
+LOCK Y Cadenas3.txt
+LOCK Z Cadeans4.txt
 ***
 18
 118
@@ -28,6 +26,6 @@ Z=Cadeans4.txt
 #                    #                                   #                                   #                       #
 #                    #                                   #                                   #                       #
 #                    #                                   #                                   #                       #
-#                    #                                   #                                   #                       #
-#       #$#          #                                   #                                   #                       #
+#                    #                                   #              ##-##                #                       #
+#       #$#          #                                   #              #####                #                      2#
 ######################################################################################################################
