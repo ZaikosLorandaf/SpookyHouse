@@ -1,4 +1,5 @@
 #include "print_buffer.h"
+#include <assert.h>
 #include <stdarg.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -43,6 +44,7 @@ bool format_to_print_buffer(const char *restrict format, ...) {
   const int max_cpy = (int)(BUFF_SIZE - buff_ptr->size);
   const int copied =
       vsnprintf(buff_ptr->buff + buff_ptr->size, max_cpy, format, ap);
+  va_end(ap);
   if (copied < 0 || copied > max_cpy) {
     return false;
   }
@@ -52,9 +54,11 @@ bool format_to_print_buffer(const char *restrict format, ...) {
 
 void print_buffer(void) {
 #ifdef _WIN32
-  fwrite(buff_ptr->buff, sizeof(char), buff_ptr->size, stdout);
+  assert(buff_ptr->size ==
+         fwrite(buff_ptr->buff, sizeof(char), buff_ptr->size, stdout));
 #else
-  fwrite_unlocked(buff_ptr->buff, sizeof(char), buff_ptr->size, stdout);
+  assert(buff_ptr->size ==
+         fwrite_unlocked(buff_ptr->buff, sizeof(char), buff_ptr->size, stdout));
 #endif
   clear_print_buffer();
 }

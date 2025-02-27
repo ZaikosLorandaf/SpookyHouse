@@ -29,12 +29,12 @@ bool print_title_screen(void) {
       }
     }
     if (!format_to_print_buffer("%s" NEWLINE_SEQUENCE, buff)) {
-      fclose(f);
+      (void)fclose(f);
       return false;
     }
   }
   print_buffer();
-  fclose(f);
+  (void)fclose(f);
   return true;
 }
 
@@ -45,20 +45,21 @@ bool read_maze(const char *restrict maze_path, struct Maze *restrict out_maze) {
   //   return false;
   char buff[BUFF_SIZE];
   if (NULL == fgets(buff, BUFF_SIZE, f)) {
-    fclose(f);
+    (void)fclose(f);
     assert(false);
     return false;
   }
+  // NOLINTNEXTLINE(cert-err34-c)
   if (2 != sscanf(buff, "%d %d", &(out_maze->dimen.x), &(out_maze->dimen.y))) {
-    fclose(f);
+    (void)fclose(f);
     assert(false);
     return false;
   }
   out_maze->content =
-      malloc(out_maze->dimen.x * out_maze->dimen.y * sizeof(char));
+      malloc((size_t)(out_maze->dimen.x) * out_maze->dimen.y * sizeof(char));
   for (int i = 0; i < out_maze->dimen.y; i++) {
     if (NULL == fgets(buff, BUFF_SIZE, f)) {
-      fclose(f);
+      (void)fclose(f);
       free(out_maze->content);
       out_maze->content = NULL;
       assert(false);
@@ -77,14 +78,14 @@ bool read_maze(const char *restrict maze_path, struct Maze *restrict out_maze) {
       len++;
     }
     if (len != out_maze->dimen.x) {
-      fclose(f);
+      (void)fclose(f);
       free(out_maze->content);
       out_maze->content = NULL;
       return false;
     }
-    memcpy(out_maze->content + (out_maze->dimen.x * i), buff, len);
+    memcpy(out_maze->content + ((ptrdiff_t)out_maze->dimen.x * i), buff, len);
   }
-  fclose(f);
+  (void)fclose(f);
   return true;
 }
 

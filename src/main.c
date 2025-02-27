@@ -82,7 +82,7 @@ int main(void) {
   init_direct_mode();
   init_print_buffer();
   assert(print_title_screen());
-  getch();
+  (void)getch();
   clear_screen();
   // code de couleur. je voulais ajouter une cle pis une porte mais
   // trop complique a mon gout. mais je laisse ca ici au cas ou
@@ -99,7 +99,7 @@ int main(void) {
   print_player_char(&player_coordinate);
   while (true) {
     print_buffer();
-    char user_input = getch();
+    char user_input = (char)(getch());
     if (should_quit(user_input)) {
       clear_screen();
       print_buffer();

@@ -1,2 +1,9 @@
 CompileFlags:
-  CompilationDatabase: "build"
+  CompilationDatabase: "./build"
+Diagnostics:
+  ClangTidy:
+    FastCheckFilter: None
+    Add:
+      - 'bugprone-*'
+      - 'misc-*'
+      - 'cert-*'

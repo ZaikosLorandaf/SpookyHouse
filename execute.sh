@@ -1,2 +1,2 @@
 #!/bin/sh
-build/SpookyHouse
+./build/SpookyHouse
