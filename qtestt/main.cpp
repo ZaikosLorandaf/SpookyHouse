@@ -4,8 +4,8 @@
 #include <QApplication>
 
 void buttonPushedImageCat(QPushButton *p, MainWindow *w){
-    delete p;
-    const char* path2 = ":/assets/images/cat.png";
+//    delete p;
+    const char* path2 = ":/assets/images/rat.png";
     QDialog *dialog = new QDialog(w);
     dialog->setWindowTitle(" ");
 
@@ -20,6 +20,7 @@ void buttonPushedImageCat(QPushButton *p, MainWindow *w){
 
     dialog->setFixedSize(pixmap.size());
     dialog->exec();
+
 }
 
 int main(int argc, char *argv[])
