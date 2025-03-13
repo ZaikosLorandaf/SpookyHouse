@@ -1,6 +1,9 @@
-INDICE ! Indice1.txt
-MAP 1 Etage2.txt
-CADENA X Cadena1.txt
+INDICE
+!=Indice1.txt
+MAP
+1=Etage2.txt
+CADENA
+X=Cadena1.txt
 ***
 21
 118
