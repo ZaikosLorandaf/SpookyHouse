@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+        <file>assets/images/cat.png</file>
+        <file>assets/images/rat.png</file>
+        <file>assets/images/TitleBG.png</file>
+        <file>assets/images/TitleLogo.png</file>
+        <file>assets/images/escapeSergeLogo001.png</file>
+        <file>assets/images/fac_pixelise_dehors_front.png</file>
+        <file>assets/images/StartGame001.png</file>
+        <file>assets/images/lowtiergod.jpg</file>
+        <file>assets/images/Serge001.jpg</file>
+        <file>assets/images/wolverine.png</file>
+    </qresource>
+</RCC>
