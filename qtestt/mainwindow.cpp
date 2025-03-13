@@ -64,17 +64,5 @@ QPushButton* MainWindow::createPushButton(const char* path, struct Size2 size, s
 
 void MainWindow::clearScreen()
 {
-    QLayout* layout = centralWidget()->layout();
 
-
-    if (layout) {
-        QLayoutItem* item;
-        while ((item = layout->takeAt(0)) != nullptr) {
-            QWidget* widget = item->widget();
-            if (widget) {
-                widget->deleteLater();
-            }
-            delete item;
-        }
-    }
 }
