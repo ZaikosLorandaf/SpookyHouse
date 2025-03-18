@@ -13,7 +13,8 @@ MainWindow::MainWindow(QWidget *parent)
     QPixmap titleLogo(":/assets/images/escapeSergeLogo001.png");
     QPixmap titleBG(":/assets/images/fac_pixelise_dehors_front.png");
 
-
+    this->pc.x = 5;
+    this->pc.y = 0;
 
     ui->label_title->setPixmap(titleLogo);
     ui->label_BG->setPixmap(titleBG);
@@ -25,33 +26,40 @@ MainWindow::MainWindow(QWidget *parent)
     ui->label_BG->setPixmap(titleBG);
     ui->label_BG->setScaledContents(true);
     ui->label_BG->setAlignment(Qt::AlignCenter);
-
 }
+
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
 
-QImage MainWindow::createImageFromPath(const char* path){
-    QImage q(path);
+QLabel* MainWindow::createImageLabelFromPath(const char* path, Size2 size, Coordinates coords){
+    QLabel* q = new QLabel(this);
+    q->setScaledContents(true);
+    QImage* p = createImageFromPath(path);
+    q->setPixmap(QPixmap::fromImage(*p));
+    q->setGeometry(coords.x, coords.y, size.x, size.y);
+    return q;
+}
 
-    if (q.isNull()) {
+QImage* MainWindow::createImageFromPath(const char* path){
+    QImage* q = new QImage(path);
+
+    if (q->isNull()) {
         qWarning() << "Failed to load image from path: " << path;
-        q = QImage(100, 100, QImage::Format_RGB32);
+        *q = QImage(100, 100, QImage::Format_RGB32);
     }
 
     return q;
 }
 
-
-
-QPushButton* MainWindow::createPushButton(const char* path, struct Size2 size, struct Coordinates coords){
+QPushButton* MainWindow::createPushButton(const char* path, Size2 size, Coordinates coords){
     QPushButton* p = new QPushButton(this);
     p->setIcon(QIcon(path));
     p->setIconSize(QSize(size.x, size.y));
     p->setFixedSize(size.x, size.y);
-    p->setGeometry(coords.x1, coords.y1, coords.x2, coords.y2);
+    p->setGeometry(coords.x, coords.y, size.x, size.y);
     p->setStyleSheet("QPushButton { border: none; background: transparent; }");
     p->show();
 
@@ -62,7 +70,18 @@ QPushButton* MainWindow::createPushButton(const char* path, struct Size2 size, s
     return p;
 }
 
+void MainWindow::clearTitleScreen(){
+    if (ui->label_title){
+        delete(ui->label_title);
+    }
+    if (ui->label_BG){
+        delete(ui->label_BG);
+    }
+    return;
+}
+
 void MainWindow::clearScreen()
 {
 
 }
+
