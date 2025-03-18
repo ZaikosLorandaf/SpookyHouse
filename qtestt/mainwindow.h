@@ -3,7 +3,10 @@
 
 #include <QMainWindow>
 #include <QWidget>
-#include <QtWidgets>
+#include <QtWidgets> // warning, i know it shouldn't be included. im lazy
+
+#include "Coordinates.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -18,12 +21,31 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    QImage createImageFromPath(const char* path);
-    QPushButton* createPushButton(const char* path, struct Size2 size, struct Coordinates coords);
+    QImage* createImageFromPath(const char* path);
+    QPushButton* createPushButton(const char* path, Size2 size, Coordinates coords);
     void clearScreen();
+    void clearTitleScreen();
+    QLabel* createImageLabelFromPath(const char* path, Size2 size, Coordinates coords);
+
+    Coordinates pc;
+
+
 private:
     Ui::MainWindow *ui;
+
+protected:
+    void keyPressEvent(QKeyEvent *event) override {
+        if (event->key() == Qt::Key_Escape) {
+            close();
+        } else {
+            emit keyPressed(this, event->key());
+//            qDebug() << "Key pressed:" << event->text();
+        }
+    }
+
 signals:
     void buttonClicked(QPushButton* b, MainWindow* a);
+    void keyPressed(MainWindow *a, int key);
+
 };
 #endif // MAINWINDOW_H
