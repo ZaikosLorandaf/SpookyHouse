@@ -5,9 +5,9 @@ HINT - Indice13.txt
 OBJECT } coin
 MAP 3 Etage3.txt
 END * End.txt
-LOCK X Machine.txt
-LOCK Y CadenasDirection.txt
-DOOR Z CadenasPorte.txt
+LOCKMACHINE X B3
+LOCKD Y ULRLUDDURR
+LOCKKEY Z
 ***
 18
 118

@@ -1,6 +1,6 @@
 INDICE ! Indice1.txt
 MAP 1 Etage2.txt
-CADENA X Cadena1.txt
+LOCK4 X 4576
 ***
 21
 118

@@ -5,9 +5,9 @@ HINT - Indice5.txt
 OBJECT } key1
 MAP 1 Etage1.txt
 MAP 2 Etage3.txt
-LOCK X Cadenas2.txt
-LOCK Y Cadenas3.txt
-LOCK Z Cadeans4.txt
+LOCKTOUR X 481
+LOCK4 Y 9762
+LOCKKEY Z
 ***
 18
 118
