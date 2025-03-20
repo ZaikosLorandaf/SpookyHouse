@@ -72,7 +72,7 @@ static const char *const maze[] = {
     "####  #  #  #  #######  #######  #  #######  ####  #  #  #  #",
     "#     #  #  #     #                 #           #  #     #  #",
     "#  #######  ####  #  ####  #############  #  #  ####  #  #  #",
-    "#        #     #        #     #     #     #  #        #  #  #",
+    "#        #  !  #        #     #     #     #  #        #  #  #",
     "#  ##########  ####  #######  #  #######  #  ################",
     "#     #        #        #                 #  #     #  #     #",
     "#  #  #######  ####  ##########  ##########  ####  #  #  ####",
@@ -142,6 +142,21 @@ int directionPast = 1;
 int nombreActuel = 100; //100 n'est pas un chiffre atteignable normalement je l'utilise pour la premiere verification
 int slotCadenasCirculaire = 0;
 
+const char* numpad[] = {
+" ______________ ",	
+"|              |",
+"| [_][_][_][_] |",
+"|              |",
+"| [_][_][_][_] |",
+"| [_][_][_][ | |",
+"| [_][_][_][_| |",
+"| [_][_][_][ | |",
+"| [____][_][_| |",
+"|______________|"
+}; // 9h x 16 l
+bool numpadunlocked = false;
+Coordinates numpadFerme = {16, 10};
+
 
 
 int modeInteraction = 0; //0: mouvement, 1: cadenas4, 2: cadenasTourner
@@ -202,12 +217,19 @@ static bool move_player(char key_presed, Coordinates *player_coordinate) {
 			  }
 			  modeInteraction = 1;
 		  }
-		  else if(maze[new_coord.y][new_coord.x] == '@'){
+		  if(maze[new_coord.y][new_coord.x] == '@'){
 			  if(unlocked2){
 				  *player_coordinate = new_coord;
 				  return true;
 			  }
 			  modeInteraction = 2;
+		  }
+		  if (maze[new_coord.y][new_coord.x] == '!'){
+			  if (numpadunlocked){
+				  *player_coordinate = new_coord;
+				  return true;
+			  }
+			  modeInteraction = 4;
 		  }
 		  return false;
 	  }
@@ -431,11 +453,6 @@ void verifierCombinaisonCadenasCirculaire(){
 	else{ //combinaison erronee
 		cout << endl << "mistake" << endl;
 		
-//debugging. je le laisse au cas ou
-//		cout << "mistake";
-//		cout << objectif[0] << objectif[1] << objectif[2] << endl;
-//		cout << combinaisonCirculaire[0] << combinaisonCirculaire[1] << combinaisonCirculaire[2];
-		
 		reinitialiserCombinaison();
 	}
 }
@@ -470,6 +487,39 @@ void interagirCadenasCirculaire(char key, Coordinates* player_coordinate){
 			break;
 	}
 }
+
+////////
+//CADENAS CHIFFRES ET LETTRES
+////////
+
+
+
+void afficherNumpad(){
+	clear_screen();
+	for (int i=0; i<numpadFerme.y; i++){
+		cout << numpad[i];
+		Coordinates c = {0, i + 1};
+		move_cursor(&c);
+	}
+}
+
+bool verifierCombinaisonNumpad(const char* a){
+	const char* Combinaison = "ab";
+	if (*a == *Combinaison){
+		return true;
+	}
+	return false;
+}
+
+void interagirNumpad(Coordinates* pc){
+	char a;
+	cin >> a;
+	if (verifierCombinaisonNumpad(&a) == true){
+		numpadunlocked = true;
+	}
+	sortirCadenas(pc);
+}
+
 
 ///////////////////////////////////////////////////////////////////////
 // MAIN
@@ -541,11 +591,21 @@ if(modeInteraction == 2){
 	afficherCadenasCirculaireFerme();
     	interagirCadenasCirculaire(user_input, &player_coordinate);
 }  
-
+if(modeInteraction == 4){
+	if (numpadunlocked){
+		sortirCadenas(&player_coordinate);
+		user_input = 'c';
+	}
+	afficherNumpad();
+	interagirNumpad(&player_coordinate);
 }
+}
+
+
+
 
 	
 
 	clear_screen();
-  return 0;
+	return 0;
 };
