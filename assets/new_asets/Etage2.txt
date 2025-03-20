@@ -7,7 +7,7 @@ MAP 1 Etage1.txt
 MAP 2 Etage3.txt
 LOCKTOUR X 481
 LOCK4 Y 9762
-LOCKKEY Z
+LOCKKEY Z key1
 ***
 18
 118

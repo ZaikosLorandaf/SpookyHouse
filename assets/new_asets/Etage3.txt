@@ -6,7 +6,7 @@ OBJECT } key2
 MAP 2 Etage2.txt
 MAP 4 Etage4.txt
 LOCKA X 023E
-LOCKKEY Y
+LOCKKEY Y key2
 ***
 18
 118
