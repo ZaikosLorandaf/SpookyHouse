@@ -13,9 +13,11 @@ MainWindow::MainWindow(QWidget *parent)
     QPixmap titleLogo(":/assets/images/escapeSergeLogo001.png");
     QPixmap titleBG(":/assets/images/fac_pixelise_dehors_front.png");
 
-    this->pc.x = 5;
-    this->pc.y = 0;
+    //this should be roughly the center of the screen
+    this->pc.x = 12;
+    this->pc.y = 10;
 
+    //displaying title screen
     ui->label_title->setPixmap(titleLogo);
     ui->label_BG->setPixmap(titleBG);
 
@@ -35,15 +37,19 @@ MainWindow::~MainWindow()
 }
 
 QLabel* MainWindow::createImageLabelFromPath(const char* path, Size2 size, Coordinates coords){
+    //Creates an image label with a path, an image size and coordinates.
     QLabel* q = new QLabel(this);
     q->setScaledContents(true);
     QImage* p = createImageFromPath(path);
     q->setPixmap(QPixmap::fromImage(*p));
     q->setGeometry(coords.x, coords.y, size.x, size.y);
+    //to avoid memory leak
+    delete(p);
     return q;
 }
 
 QImage* MainWindow::createImageFromPath(const char* path){
+    //Creates an image from a path. useful to create image label.
     QImage* q = new QImage(path);
 
     if (q->isNull()) {
@@ -55,6 +61,7 @@ QImage* MainWindow::createImageFromPath(const char* path){
 }
 
 QPushButton* MainWindow::createPushButton(const char* path, Size2 size, Coordinates coords){
+    //Creates a push button with an image.
     QPushButton* p = new QPushButton(this);
     p->setIcon(QIcon(path));
     p->setIconSize(QSize(size.x, size.y));
@@ -84,4 +91,3 @@ void MainWindow::clearScreen()
 {
 
 }
-
