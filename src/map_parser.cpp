@@ -1,7 +1,6 @@
 #include "../headers/map.hpp"
+#include <cassert>
 #include <fstream>
-#include <ios>
-#include <iostream>
 #include <sstream>
 #include <string>
 #include <utility>
@@ -15,8 +14,7 @@ std::pair<Vec2, std::vector<TileCoord>> Map::parse_file(const char *file_path) {
       break;
   }
   line.clear();
-  if (file.eof())
-    throw std::ios_base::failure("wrong format");
+  assert(!file.eof());
   std::getline(file, line);
   std::stringstream size_stream(line);
   Vec2 size(size_stream);
@@ -29,8 +27,7 @@ std::pair<Vec2, std::vector<TileCoord>> Map::parse_file(const char *file_path) {
       const char c = *i;
       if (c == ' ') {
       } else if (c == '#') {
-        Tile *tile = new TileWall();
-        tiles.emplace_back(x, y, tile);
+        tiles.emplace_back(x, y, nullptr);
       } else {
       }
       x++;
@@ -38,5 +35,5 @@ std::pair<Vec2, std::vector<TileCoord>> Map::parse_file(const char *file_path) {
     y++;
   }
 
-  return std::make_pair(size, tiles);
+  return std::make_pair(std::move(size), std::move(tiles));
 }

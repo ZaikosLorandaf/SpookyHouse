@@ -44,7 +44,10 @@ Tile *Map::get_tile(Vec2 coord) const {
   if (iter_pair.first == iter_pair.second)
     return Map::empty_tile.get();
 
-  return iter_pair.first->get_tile();
+  Tile *tile_ptr = iter_pair.first->get_tile();
+  if (tile_ptr == nullptr)
+    return Map::wall_tile.get();
+  return tile_ptr;
 }
 
 Tile *Map::get_tile(vec_comp x, vec_comp y) const {
@@ -54,3 +57,5 @@ Tile *Map::get_tile(vec_comp x, vec_comp y) const {
 
 const std::unique_ptr<TileEmpty> Map::empty_tile =
     std::make_unique<TileEmpty>();
+
+const std::unique_ptr<TileWall> Map::wall_tile = std::make_unique<TileWall>();

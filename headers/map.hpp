@@ -13,6 +13,7 @@ private:
   parse_file(const char *file_path);
 
   static const std::unique_ptr<TileEmpty> empty_tile;
+  static const std::unique_ptr<TileWall> wall_tile;
 
 public:
   Map(const char *file_path);
