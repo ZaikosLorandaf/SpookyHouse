@@ -2,13 +2,15 @@
 #define COORDINATES_H
 
 typedef struct {
-    int x;
-    int y;
+    float x;
+    float y;
 } Coordinates;
 
 typedef struct {
-    int x;
-    int y;
-} Size2;
+    float x1; //pos X
+    float y1; //pos Y
+    int x2; //size X
+    int y2; //size Y
+} Size4;
 
 #endif // COORDINATES_H
