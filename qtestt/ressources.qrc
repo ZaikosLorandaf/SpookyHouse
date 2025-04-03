@@ -10,5 +10,10 @@
         <file>assets/images/lowtiergod.jpg</file>
         <file>assets/images/Serge001.jpg</file>
         <file>assets/images/wolverine.png</file>
+        <file>assets/images/wall.png</file>
+        <file>assets/images/floor1.png</file>
+        <file>assets/images/floor2.png</file>
+        <file>assets/images/floor3.png</file>
+        <file>assets/images/darkness.png</file>
     </qresource>
 </RCC>
