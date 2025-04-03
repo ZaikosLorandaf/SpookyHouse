@@ -10,24 +10,24 @@ MainWindow::MainWindow(QWidget *parent)
     this->setWindowTitle("Escape Serge");
     this->setWindowIcon(QIcon(":/assets/images/Serge001.jpg"));
 /* setup title screen */
-    QPixmap titleLogo(":/assets/images/escapeSergeLogo001.png");
-    QPixmap titleBG(":/assets/images/fac_pixelise_dehors_front.png");
+//    QPixmap titleLogo(":/assets/images/escapeSergeLogo001.png");
+//    QPixmap titleBG(":/assets/images/fac_pixelise_dehors_front.png");
 
     //this should be roughly the center of the screen
     this->pc.x = 12;
-    this->pc.y = 10;
+    this->pc.y = 6;
 
-    //displaying title screen
-    ui->label_title->setPixmap(titleLogo);
-    ui->label_BG->setPixmap(titleBG);
+    //title screen
 
-    ui->label_title->setPixmap(titleLogo);
-    ui->label_title->setScaledContents(true);
-    ui->label_title->setAlignment(Qt::AlignCenter);
+    this->titleScreenBackground = createImageLabelFromPath(":/assets/images/fac_pixelise_dehors_front.png", Size4 {0,0,1600,900});
+    this->title = createImageLabelFromPath(":/assets/images/escapeSergeLogo001.png", Size4 {400,100,750,100});
 
-    ui->label_BG->setPixmap(titleBG);
-    ui->label_BG->setScaledContents(true);
-    ui->label_BG->setAlignment(Qt::AlignCenter);
+
+    this->titleScreenBackground->show();
+    this->title->show();
+
+    //fullscreen
+    this->showFullScreen();
 }
 
 
@@ -36,13 +36,13 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-QLabel* MainWindow::createImageLabelFromPath(const char* path, Size2 size, Coordinates coords){
+QLabel* MainWindow::createImageLabelFromPath(const char* path, Size4 size4){
     //Creates an image label with a path, an image size and coordinates.
     QLabel* q = new QLabel(this);
     q->setScaledContents(true);
     QImage* p = createImageFromPath(path);
     q->setPixmap(QPixmap::fromImage(*p));
-    q->setGeometry(coords.x, coords.y, size.x, size.y);
+    q->setGeometry(size4.x1, size4.y1, size4.x2, size4.y2);
     //to avoid memory leak
     delete(p);
     return q;
@@ -60,13 +60,13 @@ QImage* MainWindow::createImageFromPath(const char* path){
     return q;
 }
 
-QPushButton* MainWindow::createPushButton(const char* path, Size2 size, Coordinates coords){
+QPushButton* MainWindow::createPushButton(const char* path, Size4 size4){
     //Creates a push button with an image.
     QPushButton* p = new QPushButton(this);
     p->setIcon(QIcon(path));
-    p->setIconSize(QSize(size.x, size.y));
-    p->setFixedSize(size.x, size.y);
-    p->setGeometry(coords.x, coords.y, size.x, size.y);
+    p->setIconSize(QSize(size4.x2, size4.y2));
+    p->setFixedSize(size4.x2, size4.y2);
+    p->setGeometry(size4.x1, size4.y1, size4.x2, size4.y2);
     p->setStyleSheet("QPushButton { border: none; background: transparent; }");
     p->show();
 
@@ -78,12 +78,8 @@ QPushButton* MainWindow::createPushButton(const char* path, Size2 size, Coordina
 }
 
 void MainWindow::clearTitleScreen(){
-    if (ui->label_title){
-        delete(ui->label_title);
-    }
-    if (ui->label_BG){
-        delete(ui->label_BG);
-    }
+    delete(this->title);
+    delete(this->titleScreenBackground);
     return;
 }
 
