@@ -22,12 +22,19 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     QImage* createImageFromPath(const char* path);
-    QPushButton* createPushButton(const char* path, Size2 size, Coordinates coords);
+    QPushButton* createPushButton(const char* path, Size4 size4);
     void clearScreen();
     void clearTitleScreen();
-    QLabel* createImageLabelFromPath(const char* path, Size2 size, Coordinates coords);
+    QLabel* createImageLabelFromPath(const char* path, Size4 size4);
+
+    QLabel* titleScreenBackground;
+    QLabel* title;
 
     Coordinates pc;
+    QGraphicsView* GV = new QGraphicsView(this);
+
+    //index represents the room number.
+    std::vector<QGraphicsScene*> scenes;
 
 
 private:
