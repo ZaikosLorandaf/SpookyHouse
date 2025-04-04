@@ -1,6 +1,8 @@
 #pragma once
 #include "../headers/tile_coord.hpp"
+#include <functional>
 #include <memory>
+#include <optional>
 
 TileCoord::TileCoord(Vec2 coord_in, Tile *tile_ptr)
     : tile(tile_ptr), coord(std::move(coord_in)) {}
@@ -8,7 +10,12 @@ TileCoord::TileCoord(Vec2 coord_in, Tile *tile_ptr)
 TileCoord::TileCoord(vec_comp x, vec_comp y, Tile *tile_ptr)
     : tile(tile_ptr), coord(x, y) {}
 
-Tile *TileCoord::get_tile() const { return this->tile.get(); }
+std::optional<std::reference_wrapper<Tile>> TileCoord::get_tile() const {
+  Tile *tile_ptr = this->tile.get();
+  if (tile_ptr == nullptr)
+    return std::optional<std::reference_wrapper<Tile>>();
+  return std::make_optional(std::ref(*tile_ptr));
+}
 
 Vec2 TileCoord::get_coord() const { return this->coord; }
 

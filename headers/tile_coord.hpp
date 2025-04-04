@@ -1,7 +1,9 @@
 #pragma once
 #include "tile.hpp"
 #include "vec2.hpp"
+#include <functional>
 #include <memory>
+#include <optional>
 
 class TileCoord {
 private:
@@ -17,7 +19,7 @@ public:
   TileCoord(const TileCoord &);
   TileCoord(TileCoord &&);
 
-  Tile *get_tile() const;
+  std::optional<std::reference_wrapper<Tile>> get_tile() const;
   Vec2 get_coord() const;
 
   // for sorting

@@ -1,7 +1,8 @@
 #include "../headers/map.hpp"
 #include "../headers/tile_coord.hpp"
 #include <algorithm>
-#include <memory>
+#include <functional>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -36,26 +37,23 @@ Map &Map::operator=(Map &&rval) {
   return *this;
 }
 
-Tile *Map::get_tile(Vec2 coord) const {
+std::optional<std::reference_wrapper<Tile>> Map::get_tile(Vec2 coord) const {
   if (coord.x >= this->map_size.x || coord.y >= this->map_size.y)
-    return nullptr;
+    return std::optional<std::reference_wrapper<Tile>>();
   auto iter_pair = std::equal_range(this->map_tiles.cbegin(),
                                     this->map_tiles.cend(), &coord);
   if (iter_pair.first == iter_pair.second)
-    return Map::empty_tile.get();
+    return std::make_optional(std::ref(Map::empty_tile));
 
-  Tile *tile_ptr = iter_pair.first->get_tile();
-  if (tile_ptr == nullptr)
-    return Map::wall_tile.get();
-  return tile_ptr;
+  std::optional<std::reference_wrapper<Tile>> maybe_tile =
+      iter_pair.first->get_tile();
+  if (maybe_tile.has_value())
+    return maybe_tile;
+  return std::make_optional(std::ref(Map::wall_tile));
 }
 
-Tile *Map::get_tile(vec_comp x, vec_comp y) const {
+std::optional<std::reference_wrapper<Tile>> Map::get_tile(vec_comp x,
+                                                          vec_comp y) const {
   Vec2 v(std::move(x), std::move(y));
   return this->get_tile(v);
 }
-
-const std::unique_ptr<TileEmpty> Map::empty_tile =
-    std::make_unique<TileEmpty>();
-
-const std::unique_ptr<TileWall> Map::wall_tile = std::make_unique<TileWall>();
