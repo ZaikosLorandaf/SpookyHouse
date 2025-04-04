@@ -1,29 +1,30 @@
-cmake_minimum_required(VERSION 3.21)
-project(QtGuiApp LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.21) #I picked this version at random for real
+project(EscapeSerge LANGUAGES CXX) #Yes, that's the name. Deal with it!
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 17) #Features will continue untill morale improves.
+set(CMAKE_CXX_STANDARD_REQUIRED ON) #You'll have your features and you will enjoy it!
 
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON) #Qt MOC
+set(CMAKE_AUTOUIC ON) #Qt UI files compiler
+set(CMAKE_AUTORCC ON) #Qt qrc files compiler
 
-find_package(Qt6 REQUIRED COMPONENTS Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Widgets) # Yes, we do really need it
 
-qt_standard_project_setup()
+qt_standard_project_setup() #We're "standard" alright!
 
-file(GLOB SRC_FILES src/*)
-file(GLOB HEADERS include/*)
-include_directories(include/)
+file(GLOB SRC_FILES src/*) #source files, ui files, and qrc files
+file(GLOB HEADERS include/*) #headers, just headers
+include_directories(include/) #so that #include "header.h" resolves properly
 
-set(PROJECT_SOURCES
-  ${SRC_FILES}
-  ${HEADERS}
-)
+set(PROJECT_SOURCES #fuck it! it all needs to be processed anyway.
+  ${SRC_FILES} #SOURCES
+  ${HEADERS} #HEADERS
+) #AND EVERYTHING NICE
 
-qt_add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
+qt_add_executable(${PROJECT_NAME} ${PROJECT_SOURCES}) #CHEMICAL Q
 
 target_link_libraries(${PROJECT_NAME}
     PUBLIC
-        Qt::Widgets
+        Qt::Widgets #No Qt, no bueno
 )
 
