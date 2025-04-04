@@ -4,7 +4,7 @@
 
 class Tile {
 public:
-  virtual ~Tile() = 0;
+  virtual ~Tile() = default;
   // virtual Tile *copy_ptr() const = 0;
 };
 

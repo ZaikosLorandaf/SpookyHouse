@@ -1,4 +1,5 @@
 #include "map.hpp"
+#include "tile.hpp"
 #include "tile_coord.hpp"
 #include <algorithm>
 #include <functional>
@@ -57,3 +58,6 @@ std::optional<std::reference_wrapper<Tile>> Map::get_tile(vec_comp x,
   Vec2 v(std::move(x), std::move(y));
   return this->get_tile(v);
 }
+
+TileEmpty Map::empty_tile;
+TileWall Map::wall_tile;

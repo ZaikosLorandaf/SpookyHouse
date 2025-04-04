@@ -1,4 +1,5 @@
 #include "save_manager.hpp"
+#include "category_collection.hpp"
 #include <fstream>
 #include <functional>
 #include <optional>
@@ -62,3 +63,5 @@ bool SaveManager::load_from_file(const char *file_path) {
   }
   return true;
 }
+
+CategoryCollection SaveManager::save_data;

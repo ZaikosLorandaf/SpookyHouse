@@ -70,3 +70,9 @@ bool operator<(Vec2 v2, const TileCoord &tc) { return tc >= v2; }
 
 TileCoord::TileCoord(TileCoord &&tc)
     : tile(std::move(tc.tile)), coord(std::move(tc.coord)) {}
+
+TileCoord &TileCoord::operator=(TileCoord &&rval) {
+  this->tile = std::move(rval.tile);
+  this->coord = std::move(rval.coord);
+  return *this;
+}
