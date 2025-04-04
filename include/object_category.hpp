@@ -1,3 +1,4 @@
+#pragma once
 #include "save_record.hpp"
 
 class ReccordCategory {

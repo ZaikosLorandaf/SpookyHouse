@@ -1,4 +1,4 @@
-#include "../headers/tile.hpp"
+#include "tile.hpp"
 #include <optional>
 
 TileEmpty::TileEmpty(const TileEmpty &) {}

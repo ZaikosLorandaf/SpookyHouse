@@ -1,4 +1,4 @@
-#include "../headers/category_collection.hpp"
+#include "category_collection.hpp"
 #include <ostream>
 
 CategoryCollection::CategoryCollection(std::size_t capacity)

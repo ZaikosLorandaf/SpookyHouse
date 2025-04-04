@@ -1,4 +1,4 @@
-#include "../headers/lock4.hpp"
+#include "lock4.hpp"
 #include <cassert>
 #include <cstddef>
 #include <cstdint>

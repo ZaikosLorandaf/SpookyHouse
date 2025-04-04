@@ -1,5 +1,5 @@
-#include "../headers/inventory.hpp"
-#include "../headers/save_manager.hpp"
+#include "inventory.hpp"
+#include "save_manager.hpp"
 #include <cstddef>
 #include <cstring>
 #include <functional>

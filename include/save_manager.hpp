@@ -1,3 +1,4 @@
+#pragma once
 #include "category_collection.hpp"
 #include <functional>
 #include <optional>

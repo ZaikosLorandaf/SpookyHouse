@@ -1,4 +1,5 @@
-#include "../headers/savable.h"
+#pragma once
+#include "saveable.hpp"
 #include <cstdint>
 #include <optional>
 

@@ -20,7 +20,7 @@ private:
 public:
   Map(const char *file_path);
   Map(const std::string &file_path);
-  Map(const Map &);
+  // Map(const Map &);
   Map(Map &&);
   Map() = delete;
   ~Map() = default;
@@ -29,6 +29,6 @@ public:
                                                        vec_comp y) const;
   std::optional<std::reference_wrapper<Tile>> get_tile(Vec2 coord) const;
 
-  Map &operator=(const Map &);
+  // Map &operator=(const Map &);
   Map &operator=(Map &&);
 };

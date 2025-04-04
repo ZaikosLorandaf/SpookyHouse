@@ -1,4 +1,4 @@
-#include "../headers/lock4_tile.hpp"
+#include "lock4_tile.hpp"
 
 TileLock4::TileLock4(Lock4Game &&init_lock) : lock_game(std::move(init_lock)) {}
 

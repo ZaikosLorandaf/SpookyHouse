@@ -1,3 +1,4 @@
+#pragma once
 #include "object_category.hpp"
 #include <cstddef>
 #include <ostream>

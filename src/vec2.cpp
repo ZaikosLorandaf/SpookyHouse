@@ -1,4 +1,4 @@
-#include "../headers/vec2.hpp"
+#include "vec2.hpp"
 #include <utility>
 
 Vec2::Vec2(vec_comp x_init, vec_comp y_init) : x(x_init), y(y_init) {}

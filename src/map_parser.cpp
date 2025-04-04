@@ -1,4 +1,4 @@
-#include "../headers/map.hpp"
+#include "map.hpp"
 #include <cassert>
 #include <fstream>
 #include <sstream>
@@ -18,7 +18,8 @@ std::pair<Vec2, std::vector<TileCoord>> Map::parse_file(const char *file_path) {
   std::getline(file, line);
   std::stringstream size_stream(line);
   Vec2 size(size_stream);
-  std::vector<TileCoord> tiles(size.x * size.y);
+  // std::vector<TileCoord> tiles(size.x * size.y);
+  std::vector<TileCoord> tiles;
   vec_comp x = 0, y = 0;
   for (line.clear(); !file.eof(); std::getline(file, line)) {
     x = 0;

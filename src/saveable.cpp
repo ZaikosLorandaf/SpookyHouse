@@ -1,5 +1,5 @@
-#include "../headers/savable.h"
-#include "../headers/save_manager.hpp"
+#include "saveable.hpp"
+#include "save_manager.hpp"
 #include <functional>
 #include <optional>
 

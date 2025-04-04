@@ -1,5 +1,4 @@
-#pragma once
-#include "../headers/tile_coord.hpp"
+#include "tile_coord.hpp"
 #include <functional>
 #include <memory>
 #include <optional>
@@ -68,9 +67,6 @@ bool operator>=(Vec2 v2, const TileCoord &tc) { return tc < v2; }
 bool operator==(Vec2 v2, const TileCoord &tc) { return tc == v2; }
 bool operator<=(Vec2 v2, const TileCoord &tc) { return tc > v2; }
 bool operator<(Vec2 v2, const TileCoord &tc) { return tc >= v2; }
-
-TileCoord::TileCoord(const TileCoord &tc)
-    : tile(tc.tile->copy_ptr()), coord(tc.coord) {}
 
 TileCoord::TileCoord(TileCoord &&tc)
     : tile(std::move(tc.tile)), coord(std::move(tc.coord)) {}

@@ -1,4 +1,4 @@
-#include "../headers/object_category.hpp"
+#include "object_category.hpp"
 #include <cstddef>
 
 ReccordCategory::ReccordCategory(std::size_t capacity)

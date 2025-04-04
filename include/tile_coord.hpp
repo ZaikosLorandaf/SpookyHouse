@@ -16,7 +16,7 @@ public:
   TileCoord(Vec2 coord, Tile *tile);
   TileCoord(vec_comp x, vec_comp y, Tile *tile);
 
-  TileCoord(const TileCoord &);
+  TileCoord(const TileCoord &) = delete;
   TileCoord(TileCoord &&);
 
   std::optional<std::reference_wrapper<Tile>> get_tile() const;
