@@ -10,17 +10,19 @@ import shutil
 class Args:
     def __init__(self) -> None:
         parser = argparse.ArgumentParser()
-        parser.add_argument('--clean', action='store_true')
-        parser.add_argument('--ninja', action='store_true')
-        parser.add_argument('--release', action='store_true')
+        parser.add_argument('--clean', action='store_true') #create a clean build (remove old build files)
+        parser.add_argument('--ninja', action='store_true') #use Ninja as build tool (recommended)
+        parser.add_argument('--release', action='store_true') #create a release build (faster execution but cannot be debuged)
         args_namespace = parser.parse_args()
         self.clean: bool = args_namespace.clean
         self.ninja: bool = args_namespace.ninja
         self.release: bool = args_namespace.release
 
 file_path = pathlib.PurePath(os.path.realpath(__file__))
-os.chdir(file_path.parent)
+os.chdir(file_path.parent) #making sure we're in the project's directory
+
 args = Args()
+
 cmake_additionnal_args: list[str] = []
 if args.clean:
     if os.path.exists("out"):
