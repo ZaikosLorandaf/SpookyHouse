@@ -2,18 +2,16 @@
 #include "save_manager.hpp"
 #include <cstddef>
 #include <cstring>
-#include <functional>
 #include <string>
 #include <vector>
 
 std::vector<std::string> Inventory::retrieve_key_vector() {
-  std::optional<std::reference_wrapper<const SaveReccord>> sro =
-      SaveManager::get_reccord(Inventory::type, Inventory::key_id);
-  if (!sro.has_value())
+  auto sro = SaveManager::get_reccord(Inventory::type, Inventory::key_id);
+  if (!sro)
     return std::vector<std::string>();
   const SaveReccord &sr = sro.value();
-  std::optional<const char *> maybe_key_list = sr.retrieve_value("KEY_LIST");
-  if (!maybe_key_list.has_value())
+  auto maybe_key_list = sr.retrieve_value("KEY_LIST");
+  if (!maybe_key_list)
     return std::vector<std::string>();
   const char *const key_list = maybe_key_list.value();
   std::string buff;

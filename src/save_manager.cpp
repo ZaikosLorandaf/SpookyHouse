@@ -1,25 +1,29 @@
 #include "save_manager.hpp"
 #include "category_collection.hpp"
+#include <cassert>
 #include <fstream>
 #include <functional>
 #include <optional>
 
 std::optional<std::reference_wrapper<const SaveReccord>>
 SaveManager::get_reccord(const char *category_name, const char *id) {
+  assert(category_name != nullptr);
+  assert(id != nullptr);
   ReccordCategory *category =
       SaveManager::save_data.get_category(category_name);
   if (category == nullptr)
-    return std::optional<std::reference_wrapper<const SaveReccord>>();
+    return {};
   SaveReccord *rc_ptr = category->get_reccord_with_id(id);
   if (rc_ptr == nullptr) {
-    return std::optional<std::reference_wrapper<const SaveReccord>>();
+    return {};
   }
-  return std::make_optional<std::reference_wrapper<const SaveReccord>>(
-      std::cref(*rc_ptr));
+  return std::cref(*rc_ptr);
 }
 
 void SaveManager::set_reccord(const char *category_name, const char *id,
                               SaveReccord save_reccord) {
+  assert(category_name != nullptr);
+  assert(id != nullptr);
   ReccordCategory *category =
       SaveManager::save_data.get_category(category_name);
   if (category == nullptr) {
@@ -32,12 +36,14 @@ void SaveManager::set_reccord(const char *category_name, const char *id,
 }
 
 bool SaveManager::save_to_file(const char *file_path) {
+  assert(file_path != nullptr);
   std::ofstream file(file_path);
   file << SaveManager::save_data;
   return true;
 }
 
 bool SaveManager::load_from_file(const char *file_path) {
+  assert(file_path != nullptr);
   std::ifstream file(file_path);
   std::string category, id, entry, value;
   while (!file.eof()) {

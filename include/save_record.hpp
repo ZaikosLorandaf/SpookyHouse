@@ -14,7 +14,7 @@ public:
   SaveReccord(const SaveReccord &) = default;
   SaveReccord(SaveReccord &&) = default;
 
-  std::string set_key_value(const char *, const char *);
+  std::optional<std::string> set_key_value(const char *, const char *);
   void init_key_value(std::string, std::string);
   std::optional<const char *> retrieve_value(const char *key) const;
 

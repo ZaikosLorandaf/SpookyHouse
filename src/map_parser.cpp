@@ -7,6 +7,7 @@
 #include <vector>
 
 std::pair<Vec2, std::vector<TileCoord>> Map::parse_file(const char *file_path) {
+  assert(file_path != nullptr);
   std::ifstream file(file_path);
   std::string line;
   for (; !file.eof(); std::getline(file, line)) {

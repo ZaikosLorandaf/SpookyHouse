@@ -14,14 +14,14 @@ TileMapEntrace::TileMapEntrace(OPTIONAL_STRING from_map, OPTIONAL_STRING to_map)
 
 OPTIONAL_STRING_REF TileMapEntrace::from_map() const {
   if (!this->from.has_value())
-    return OPTIONAL_STRING_REF();
+    return {};
   const std::string &ref = this->from.value();
-  return std::make_optional(std::ref(ref));
+  return std::cref(ref);
 }
 
 OPTIONAL_STRING_REF TileMapEntrace::to_map() const {
   if (!this->to.has_value())
-    return OPTIONAL_STRING_REF();
+    return {};
   const std::string &ref = this->to.value();
-  return std::make_optional(std::ref(ref));
+  return std::cref(ref);
 }

@@ -12,8 +12,8 @@ TileCoord::TileCoord(vec_comp x, vec_comp y, Tile *tile_ptr)
 std::optional<std::reference_wrapper<Tile>> TileCoord::get_tile() const {
   Tile *tile_ptr = this->tile.get();
   if (tile_ptr == nullptr)
-    return std::optional<std::reference_wrapper<Tile>>();
-  return std::make_optional(std::ref(*tile_ptr));
+    return {};
+  return std::ref(*tile_ptr);
 }
 
 Vec2 TileCoord::get_coord() const { return this->coord; }

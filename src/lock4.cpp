@@ -63,6 +63,7 @@ void Lock4Game::retrieve_lock_save() {
 Lock4Game::Lock4Game(const uint8_t *init_combi, std::string init_id,
                      std::optional<const uint8_t *> init_input)
     : id(init_id), active_object(true) {
+  assert(init_combi != nullptr);
   std::memcpy(this->combination, init_combi, 4 * sizeof(uint8_t));
   if (init_input.has_value()) {
     const uint8_t *const init_input_defined = init_input.value();

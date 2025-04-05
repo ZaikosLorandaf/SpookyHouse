@@ -1,10 +1,12 @@
 #include "category_collection.hpp"
+#include <cassert>
 #include <ostream>
 
 CategoryCollection::CategoryCollection(std::size_t capacity)
     : category_name_to_content(capacity) {}
 
 ReccordCategory *CategoryCollection::get_category(const char *ct) {
+  assert(ct != nullptr);
   for (auto i = this->category_name_to_content.begin();
        i != this->category_name_to_content.end(); i++) {
     if (i->first == ct)
@@ -14,6 +16,7 @@ ReccordCategory *CategoryCollection::get_category(const char *ct) {
 }
 
 void CategoryCollection::set_category(const char *ct, ReccordCategory cv) {
+  assert(ct != nullptr);
   for (auto i = this->category_name_to_content.begin();
        i != this->category_name_to_content.end(); i++) {
     if (i->first == ct) {

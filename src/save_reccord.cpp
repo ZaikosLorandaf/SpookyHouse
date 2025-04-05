@@ -1,4 +1,5 @@
 #include "save_record.hpp"
+#include <cassert>
 #include <cstddef>
 #include <optional>
 #include <sstream>
@@ -7,15 +8,18 @@
 SaveReccord::SaveReccord(std::size_t capacity) : key_val_vector(capacity) {}
 
 std::optional<const char *> SaveReccord::retrieve_value(const char *key) const {
-  for (auto i = this->key_val_vector.begin(); i != this->key_val_vector.end();
+  for (auto i = this->key_val_vector.cbegin(); i != this->key_val_vector.cend();
        i++) {
     if (key == i->first)
-      return std::make_optional(i->second.c_str());
+      return i->second.c_str();
   }
-  return std::optional<const char *>();
+  return {};
 }
 
-std::string SaveReccord::set_key_value(const char *key, const char *val) {
+std::optional<std::string> SaveReccord::set_key_value(const char *key,
+                                                      const char *val) {
+  assert(key != nullptr);
+  assert(val != nullptr);
   for (auto i = this->key_val_vector.begin(); i != this->key_val_vector.end();
        i++) {
     if (key == i->first) {
@@ -25,7 +29,7 @@ std::string SaveReccord::set_key_value(const char *key, const char *val) {
     }
   }
   this->key_val_vector.emplace_back(std::string(key), std::string(val));
-  return std::string();
+  return {};
 }
 
 std::string SaveReccord::to_string() const {
