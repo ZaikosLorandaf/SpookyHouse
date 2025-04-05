@@ -1,5 +1,15 @@
-Team 7 Escape Room Repo
+# Team 7 Escape Serge
 
-Let's be the best once again!!
+## Building the code
 
+Run the `build.py` script and look for the executable in the `out` directory
 
+## Project structure
+
+- Headers `.h`/`.hpp` in `include`
+- Source files `.ccp`, UI files `.ui` and Ressources files `qrc` in `src`
+- Assets (images, etc.) in the `assets` directory
+
+## Any question ?
+
+Try Discord
