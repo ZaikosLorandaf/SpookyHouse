@@ -5,6 +5,7 @@ import subprocess
 import argparse
 import os
 import pathlib
+import shutil
 
 class Args:
     def __init__(self) -> None:
@@ -22,7 +23,8 @@ os.chdir(file_path.parent)
 args = Args()
 cmake_additionnal_args: list[str] = []
 if args.clean:
-    os.rmdir("out")
+    if os.path.exists("out"):
+        shutil.rmtree("out")
 if args.ninja:
     cmake_additionnal_args += ["-G", "Ninja"]
 if args.release:
