@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
   this->pc.x = 12;
   this->pc.y = 6;
 
-  // title screen
+  // title screen. Size4s are roughly the center of the screen. or well, on mine. haha orwell 1984
 
   this->titleScreenBackground = createImageLabelFromPath(
       ":/assets/images/fac_pixelise_dehors_front.png", Size4{0, 0, 1600, 900});
@@ -27,9 +27,32 @@ MainWindow::MainWindow(QWidget *parent)
 
   // fullscreen
   this->showFullScreen();
+
+    //setup second thread
+  secondary.moveToThread(&thr);
+    //start second thread function when second thread start
+  connect(&thr, &QThread::started, &secondary, &W_thread::doStuff);
+  //stops thread when app closes
+  connect(qApp, &QCoreApplication::aboutToQuit, &secondary, &W_thread::stop);
+
+  thr.start();
+
+  connect(&secondary, &W_thread::muon, this, &MainWindow::muon);
+  connect(&secondary, &W_thread::bouton, this, &MainWindow::bouton);
+  connect(&secondary, &W_thread::joystick, this, &MainWindow::joystick);
+  connect(&secondary, &W_thread::jumpscare, this, &MainWindow::jumpscare);
+  connect(&secondary, &W_thread::potentiometre, this, &MainWindow::potentiometre);
+  connect(&secondary, &W_thread::numpad, this, &MainWindow::numpad);
 }
 
-MainWindow::~MainWindow() { delete ui; }
+MainWindow::~MainWindow() {
+
+    delete ui;
+    //close second thread
+    secondary.stop();
+    thr.quit();
+    thr.wait();
+}
 
 QLabel *MainWindow::createImageLabelFromPath(const char *path, Size4 size4) {
   // Creates an image label with a path, an image size and coordinates.

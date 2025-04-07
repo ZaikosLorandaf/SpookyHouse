@@ -55,7 +55,7 @@ public:
   DarkOverlay(QWidget *parent = nullptr) : QWidget(parent) {
     setAttribute(Qt::WA_TransparentForMouseEvents);
     setWindowFlags(Qt::Widget | Qt::FramelessWindowHint);
-    setStyleSheet("background: rgba(0, 0, 0, 200);");
+    setStyleSheet("background: rgba(0, 0, 0, 111);");
   }
 };
 
@@ -223,11 +223,14 @@ void buttonPushed(QPushButton *p, MainWindow *w) {
   createMap(w);
 }
 
+void muon(){
+    return;
+}
+
 int main(int argc, char *argv[]) {
   QApplication a(argc, argv);
   MainWindow w;
   w.show();
-
   Size4 size4;
   size4.x1 = 635;
   size4.y1 = 400;

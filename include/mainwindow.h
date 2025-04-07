@@ -4,8 +4,10 @@
 #include <QMainWindow>
 #include <QWidget>
 #include <QtWidgets> // warning, i know it shouldn't be included. im lazy
+#include <QThread>
 
 #include "Coordinates.h"
+#include "thread.hpp"
 
 
 QT_BEGIN_NAMESPACE
@@ -36,6 +38,28 @@ public:
     //index represents the room number.
     std::vector<QGraphicsScene*> scenes;
 
+    QThread thr;
+    W_thread secondary;
+
+public slots:
+    inline void muon(){
+        qDebug() << "muon";
+    };
+    inline void bouton(int bouton){
+        qDebug() << "bouton " << bouton;
+    }; //0(haut), 1(droit), 2(bas), 3(gauche)
+    inline void joystick(int direction){
+        qDebug() << "joystick " << direction;
+    }; //0(haut), 1(droit), 2(bas), 3(gauche). peut-etre ajouter diagonale mais pas live
+    inline void potentiometre(int direction){
+        qDebug() << "potentiometre " << direction;
+    }; //0(antihoraire), 1(horaire)
+    inline void numpad(QString car){
+        qDebug() << "numpad " << car;
+    };
+    inline void jumpscare(){
+        qDebug() << "jumpscare";
+    };
 
 private:
     Ui::MainWindow *ui;
