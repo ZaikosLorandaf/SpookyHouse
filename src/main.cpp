@@ -217,7 +217,7 @@ void move(MainWindow *w, int key) {
   return;
 }
 
-void move2(MainWindow *w, int key, Map map){
+void move2(MainWindow *w, int key, Map& map){
     // Deplacement
     if(key == 87){ //UP
         //TODO: add other TILE classes (door, entrance, ...)
