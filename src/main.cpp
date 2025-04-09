@@ -1,5 +1,6 @@
 #include "Coordinates.h"
 #include "mainwindow.h"
+#include "map.hpp"
 
 #include <QApplication>
 // #include <conio.h>
@@ -76,7 +77,7 @@ QGraphicsPixmapItem *createPixmap(const char *path, Coordinates size) {
   return q;
 }
 
-// TODO: char is temporary. need to add parser compatibility
+// TODO: char is temporary. need to add parser compatibility LEGACY
 void fillScene(MainWindow *w, int roomNumber, const char *t[],
                Coordinates imagesize) {
   // Remplir une scene d'images, labels, whatever you need.
@@ -117,6 +118,49 @@ void fillScene(MainWindow *w, int roomNumber, const char *t[],
       }
     }
   }
+}
+
+void fillScene2(MainWindow *w, Map& map, int roomNumber) {
+    // Remplir une scene d'images, labels, whatever you need.
+    Coordinates imagesize = {50, 50};
+    int x = map.get_size().x;
+    int y = map.get_size().y;
+    for (int i = 0; i < y; i++) {
+        for (int j = 0; j < x; j++) {
+            // todo: check for walls, floors, etc. and execute in separate thread
+            // (ideally.)
+            auto maybe_tile = map.get_tile(i, j);
+            assert(maybe_tile);
+            Tile& tile = *maybe_tile;
+            TileWall* wall = dynamic_cast<TileWall*>(&tile);
+            TileEmpty* empty = dynamic_cast<TileEmpty*>(&tile);
+            if (wall) {
+                const char *path = ":/assets/images/wall.png";
+                QGraphicsPixmapItem *q = createPixmap(path, imagesize);
+                w->scenes[roomNumber]->addItem(q);
+                q->setPos(j * imagesize.x, i * imagesize.y);
+            }
+            if (empty) {
+                int rand = std::rand() % 3;
+                if (rand == 0) {
+                    const char *path = ":/assets/images/floor1.png";
+                    QGraphicsPixmapItem *q = createPixmap(path, imagesize);
+                    w->scenes[roomNumber]->addItem(q);
+                    q->setPos(j * imagesize.x, i * imagesize.y);
+                } else if (rand == 1) {
+                    const char *path = ":/assets/images/floor2.png";
+                    QGraphicsPixmapItem *q = createPixmap(path, imagesize);
+                    w->scenes[roomNumber]->addItem(q);
+                    q->setPos(j * imagesize.x, i * imagesize.y);
+                } else {
+                    const char *path = ":/assets/images/floor3.png";
+                    QGraphicsPixmapItem *q = createPixmap(path, imagesize);
+                    w->scenes[roomNumber]->addItem(q);
+                    q->setPos(j * imagesize.x, i * imagesize.y);
+                }
+            }
+        }
+    }
 }
 
 void switchRoom(MainWindow *w, int roomNumber) {
@@ -201,6 +245,9 @@ void createMap(MainWindow *w) {
   fillScene(w, 0, temp, Coordinates{50, 50});
   switchRoom(w, 0);
   GV->show();
+
+  Map niveau1("file.txt");
+  fillScene2(w, niveau1, 0);
 
   // character
 
