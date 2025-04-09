@@ -21,7 +21,11 @@ set(PROJECT_SOURCES #fuck it! it all needs to be processed anyway.
   ${HEADERS} #HEADERS
 ) #AND EVERYTHING NICE
 
-qt_add_executable(${PROJECT_NAME} ${PROJECT_SOURCES}) #CHEMICAL Q
+qt_add_executable(${PROJECT_NAME} ${PROJECT_SOURCES}
+    src/lockCirculaire.cpp
+    include/loclCirculaire.h
+    include/lockCirculaireTile.h
+    src/lockCirculaire_tile.cpp) #CHEMICAL Q
 
 target_link_libraries(${PROJECT_NAME}
     PUBLIC
