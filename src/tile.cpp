@@ -11,7 +11,7 @@ TileWall::TileWall(const TileWall &) {}
   std::optional<std::reference_wrapper<const std::string>>
 
 TileMapEntrace::TileMapEntrace(OPTIONAL_STRING from_map, OPTIONAL_STRING to_map)
-    : from(from_map), to(to_map) {}
+    : from(std::move(from_map)), to(std::move(to_map)) {}
 
 OPTIONAL_STRING_REF TileMapEntrace::from_map() const {
   if (!this->from.has_value())

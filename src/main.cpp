@@ -119,52 +119,56 @@ void fillScene(MainWindow *w, int roomNumber, const char *t[],
   }
 }
 
-void fillScene2(MainWindow *w, Map& map, int roomNumber) {
-    if (!w->scenes[roomNumber]) {
-        qWarning() << "Room isn't." << roomNumber;
-        return;
-    }
-    // Remplir une scene d'images, labels, whatever you need.
-    Coordinates imagesize = {50, 50};
-    int x = map.get_size().x;
-    int y = map.get_size().y;
-    for (int i = 0; i < y; i++) {
-        for (int j = 0; j < x; j++) {
-            // todo: check for walls, floors, etc. and execute in separate thread
-            // (ideally.)
-            auto maybe_tile = map.get_tile(i, j);
-            assert(maybe_tile);
-            Tile& tile = *maybe_tile;
-            //TODO: add other tiles
-            TileWall* wall = dynamic_cast<TileWall*>(&tile);
-            TileEmpty* empty = dynamic_cast<TileEmpty*>(&tile);
-            if (wall) {
-                const char *path = ":/assets/images/wall.png";
-                QGraphicsPixmapItem *q = createPixmap(path, imagesize);
-                w->scenes[roomNumber]->addItem(q);
-                q->setPos(j * imagesize.x, i * imagesize.y);
-            }
-            if (empty) {
-                int rand = std::rand() % 3;
-                if (rand == 0) {
-                    const char *path = ":/assets/images/floor1.png";
-                    QGraphicsPixmapItem *q = createPixmap(path, imagesize);
-                    w->scenes[roomNumber]->addItem(q);
-                    q->setPos(j * imagesize.x, i * imagesize.y);
-                } else if (rand == 1) {
-                    const char *path = ":/assets/images/floor2.png";
-                    QGraphicsPixmapItem *q = createPixmap(path, imagesize);
-                    w->scenes[roomNumber]->addItem(q);
-                    q->setPos(j * imagesize.x, i * imagesize.y);
-                } else {
-                    const char *path = ":/assets/images/floor3.png";
-                    QGraphicsPixmapItem *q = createPixmap(path, imagesize);
-                    w->scenes[roomNumber]->addItem(q);
-                    q->setPos(j * imagesize.x, i * imagesize.y);
-                }
-            }
+void fillScene2(MainWindow *w, Map &map, int roomNumber) {
+  if (!w->scenes[roomNumber]) {
+    qWarning() << "Room isn't." << roomNumber;
+    return;
+  }
+  // Remplir une scene d'images, labels, whatever you need.
+  Coordinates imagesize = {50, 50};
+  int x = map.get_size().x;
+  int y = map.get_size().y;
+  for (int i = 0; i < x; i++) {
+    for (int j = 0; j < y; j++) {
+      // todo: check for walls, floors, etc. and execute in separate thread
+      // (ideally.)
+      auto maybe_tile = map.get_tile(i, j);
+      // assert(maybe_tile);
+      if (!maybe_tile) {
+        std::cout << i << ' ' << j << '\n';
+        exit(1);
+      }
+      Tile &tile = *maybe_tile;
+      // TODO: add other tiles
+      TileWall *wall = dynamic_cast<TileWall *>(&tile);
+      TileEmpty *empty = dynamic_cast<TileEmpty *>(&tile);
+      if (wall) {
+        const char *path = ":/assets/images/wall.png";
+        QGraphicsPixmapItem *q = createPixmap(path, imagesize);
+        w->scenes[roomNumber]->addItem(q);
+        q->setPos(j * imagesize.x, i * imagesize.y);
+      }
+      if (empty) {
+        int rand = std::rand() % 3;
+        if (rand == 0) {
+          const char *path = ":/assets/images/floor1.png";
+          QGraphicsPixmapItem *q = createPixmap(path, imagesize);
+          w->scenes[roomNumber]->addItem(q);
+          q->setPos(j * imagesize.x, i * imagesize.y);
+        } else if (rand == 1) {
+          const char *path = ":/assets/images/floor2.png";
+          QGraphicsPixmapItem *q = createPixmap(path, imagesize);
+          w->scenes[roomNumber]->addItem(q);
+          q->setPos(j * imagesize.x, i * imagesize.y);
+        } else {
+          const char *path = ":/assets/images/floor3.png";
+          QGraphicsPixmapItem *q = createPixmap(path, imagesize);
+          w->scenes[roomNumber]->addItem(q);
+          q->setPos(j * imagesize.x, i * imagesize.y);
         }
+      }
     }
+  }
 }
 
 void switchRoom(MainWindow *w, int roomNumber) {
@@ -217,69 +221,69 @@ void move(MainWindow *w, int key) {
   return;
 }
 
-void move2(MainWindow *w, int key, Map& map){
-    // Deplacement
-    if(key == 87){ //UP
-        //TODO: add other TILE classes (door, entrance, ...)
-        auto maybe_tile = map.get_tile(w->pc.x, w->pc.y - 1);
-        assert(maybe_tile);
-        Tile& tile = *maybe_tile;
-        TileWall* wall = dynamic_cast<TileWall*>(&tile);
-        TileEmpty* empty = dynamic_cast<TileEmpty*>(&tile);
-        if(empty){
-            w->pc.y -= 1;
-            w->GV->move(w->GV->x(), w->GV->y() + 50);
-        }
-        if(wall){
-            return;
-        }
+void move2(MainWindow *w, int key, Map &map) {
+  // Deplacement
+  if (key == 87) { // UP
+    // TODO: add other TILE classes (door, entrance, ...)
+    auto maybe_tile = map.get_tile(w->pc.x, w->pc.y - 1);
+    assert(maybe_tile);
+    Tile &tile = *maybe_tile;
+    TileWall *wall = dynamic_cast<TileWall *>(&tile);
+    TileEmpty *empty = dynamic_cast<TileEmpty *>(&tile);
+    if (empty) {
+      w->pc.y -= 1;
+      w->GV->move(w->GV->x(), w->GV->y() + 50);
     }
-    if(key == 83){ //DOWN
-        //TODO: add other TILE classes (door, entrance, ...)
-        auto maybe_tile = map.get_tile(w->pc.x, w->pc.y + 1);
-        assert(maybe_tile);
-        Tile& tile = *maybe_tile;
-        TileWall* wall = dynamic_cast<TileWall*>(&tile);
-        TileEmpty* empty = dynamic_cast<TileEmpty*>(&tile);
-        if(empty){
-            w->pc.y += 1;
-            w->GV->move(w->GV->x(), w->GV->y() - 50);
-        }
-        if(wall){
-            return;
-        }
+    if (wall) {
+      return;
     }
-    if(key == 65){ //LEFT
-        //TODO: add other TILE classes (door, entrance, ...)
-        auto maybe_tile = map.get_tile(w->pc.x - 1, w->pc.y);
-        assert(maybe_tile);
-        Tile& tile = *maybe_tile;
-        TileWall* wall = dynamic_cast<TileWall*>(&tile);
-        TileEmpty* empty = dynamic_cast<TileEmpty*>(&tile);
-        if(empty){
-            w->pc.x -= 1;
-            w->GV->move(w->GV->x() + 50, w->GV->y());
-        }
-        if(wall){
-            return;
-        }
+  }
+  if (key == 83) { // DOWN
+    // TODO: add other TILE classes (door, entrance, ...)
+    auto maybe_tile = map.get_tile(w->pc.x, w->pc.y + 1);
+    assert(maybe_tile);
+    Tile &tile = *maybe_tile;
+    TileWall *wall = dynamic_cast<TileWall *>(&tile);
+    TileEmpty *empty = dynamic_cast<TileEmpty *>(&tile);
+    if (empty) {
+      w->pc.y += 1;
+      w->GV->move(w->GV->x(), w->GV->y() - 50);
     }
-    if(key == 65){ //RIGHT
-        //TODO: add other TILE classes (door, entrance, ...)
-        auto maybe_tile = map.get_tile(w->pc.x + 1, w->pc.y);
-        assert(maybe_tile);
-        Tile& tile = *maybe_tile;
-        TileWall* wall = dynamic_cast<TileWall*>(&tile);
-        TileEmpty* empty = dynamic_cast<TileEmpty*>(&tile);
-        if(empty){
-            w->pc.x += 1;
-            w->GV->move(w->GV->x() - 50, w->GV->y());
-        }
-        if(wall){
-            return;
-        }
+    if (wall) {
+      return;
     }
-    return;
+  }
+  if (key == 65) { // LEFT
+    // TODO: add other TILE classes (door, entrance, ...)
+    auto maybe_tile = map.get_tile(w->pc.x - 1, w->pc.y);
+    assert(maybe_tile);
+    Tile &tile = *maybe_tile;
+    TileWall *wall = dynamic_cast<TileWall *>(&tile);
+    TileEmpty *empty = dynamic_cast<TileEmpty *>(&tile);
+    if (empty) {
+      w->pc.x -= 1;
+      w->GV->move(w->GV->x() + 50, w->GV->y());
+    }
+    if (wall) {
+      return;
+    }
+  }
+  if (key == 65) { // RIGHT
+    // TODO: add other TILE classes (door, entrance, ...)
+    auto maybe_tile = map.get_tile(w->pc.x + 1, w->pc.y);
+    assert(maybe_tile);
+    Tile &tile = *maybe_tile;
+    TileWall *wall = dynamic_cast<TileWall *>(&tile);
+    TileEmpty *empty = dynamic_cast<TileEmpty *>(&tile);
+    if (empty) {
+      w->pc.x += 1;
+      w->GV->move(w->GV->x() - 50, w->GV->y());
+    }
+    if (wall) {
+      return;
+    }
+  }
+  return;
 }
 
 void createMap(MainWindow *w) {
@@ -290,10 +294,9 @@ void createMap(MainWindow *w) {
   QGraphicsView *GV = w->GV;
   GV->setGeometry(-50, -200, 6000, 2000);
   createScene(w);
-//  fillScene(w, 0, temp, Coordinates{50, 50});
+  //  fillScene(w, 0, temp, Coordinates{50, 50});
 
-
-  Map niveau1("file.txt");
+  Map niveau1("assets/map/Etage1.txt");
   fillScene2(w, niveau1, 0);
 
   switchRoom(w, 0);
@@ -313,56 +316,57 @@ void createMap(MainWindow *w) {
   return;
 }
 
-void numberLockChange(MainWindow* w, int number){
-    const char a = char(number);
-    w->text->setText(QString(a));
+void numberLockChange(MainWindow *w, int number) {
+  const char a = char(number);
+  w->text->setText(QString(a));
 }
 
-void displayLock4(MainWindow* w){
-    //image of the lock4
-    QLabel* label = w->createImageLabelFromPath(":assets/images/rat.png", Size4 {100, 100, 100, 100});
-    label->show();
-    //number of the lock4
+void displayLock4(MainWindow *w) {
+  // image of the lock4
+  QLabel *label = w->createImageLabelFromPath(":assets/images/rat.png",
+                                              Size4{100, 100, 100, 100});
+  label->show();
+  // number of the lock4
 
-    w->text->setText("00");
-    w->text->setGeometry(200, 200, 200, 200);
-    QObject::connect(w, &MainWindow::hideHint, w, [w, label]() {
-        w->text->hide();
-        label->hide();
-    });
+  w->text->setText("00");
+  w->text->setGeometry(200, 200, 200, 200);
+  QObject::connect(w, &MainWindow::hideHint, w, [w, label]() {
+    w->text->hide();
+    label->hide();
+  });
 }
 
-void displayLockCirculaire(MainWindow* w){
-    //image of the circular lock
-    QLabel* label = w->createImageLabelFromPath(":assets/images/rat.png", Size4 {100, 100, 100, 100});
-    label->show();
-    //number of the circular lock
+void displayLockCirculaire(MainWindow *w) {
+  // image of the circular lock
+  QLabel *label = w->createImageLabelFromPath(":assets/images/rat.png",
+                                              Size4{100, 100, 100, 100});
+  label->show();
+  // number of the circular lock
 
-    w->text->setText("00");
-    w->text->setGeometry(200, 200, 200, 200);
-    QObject::connect(w, &MainWindow::hideHint, w, [w, label]() {
-        w->text->hide();
-        label->hide();
-    });
+  w->text->setText("00");
+  w->text->setGeometry(200, 200, 200, 200);
+  QObject::connect(w, &MainWindow::hideHint, w, [w, label]() {
+    w->text->hide();
+    label->hide();
+  });
 }
 
-void displayNumpad(MainWindow* w){
-    //image of the numpad
-    QLabel* label = w->createImageLabelFromPath(":assets/images/rat.png", Size4 {100, 100, 100, 100});
-    label->show();
+void displayNumpad(MainWindow *w) {
+  // image of the numpad
+  QLabel *label = w->createImageLabelFromPath(":assets/images/rat.png",
+                                              Size4{100, 100, 100, 100});
+  label->show();
 
-    w->text->setGeometry(200, 200, 200, 200);
-    QObject::connect(w, &MainWindow::hideHint, w, [w, label]() {
-        w->text->hide();
-        label->hide();
-    });
+  w->text->setGeometry(200, 200, 200, 200);
+  QObject::connect(w, &MainWindow::hideHint, w, [w, label]() {
+    w->text->hide();
+    label->hide();
+  });
 }
 
-void displayHint(MainWindow* w, QString s){
-    w->text->setText("00");
-    QObject::connect(w, &MainWindow::hideHint, [w]() {
-        w->text->hide();
-    });
+void displayHint(MainWindow *w, QString s) {
+  w->text->setText("00");
+  QObject::connect(w, &MainWindow::hideHint, [w]() { w->text->hide(); });
 }
 
 void buttonPushed(QPushButton *p, MainWindow *w) {
@@ -372,9 +376,7 @@ void buttonPushed(QPushButton *p, MainWindow *w) {
   createMap(w);
 }
 
-void muon(){
-    return;
-}
+void muon() { return; }
 
 int main(int argc, char *argv[]) {
   QApplication a(argc, argv);

@@ -17,6 +17,7 @@
 std::pair<Vec2, std::vector<TileCoord>> Map::parse_file(const char *file_path) {
   assert(file_path != nullptr);
   std::ifstream file(file_path);
+  assert(!file.fail());
   std::string line;
   std::string token;
   std::vector<std::pair<char, std::unique_ptr<Tile>>> v;
@@ -25,6 +26,8 @@ std::pair<Vec2, std::vector<TileCoord>> Map::parse_file(const char *file_path) {
       break;
     std::stringstream ss(line);
     ss >> token;
+    if (token.empty())
+      continue;
     if (token == "LOCK4") {
       std::string symbol;
       std::string id;

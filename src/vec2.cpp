@@ -39,4 +39,4 @@ Vec2 &Vec2::operator=(Vec2 &&rval) {
   return *this;
 }
 
-Vec2::Vec2(std::istream &is) { is >> this->x >> this->y; }
+Vec2::Vec2(std::istream &is) { is >> this->y >> this->x; }

@@ -26,16 +26,16 @@ Map::Map(const char *file_path, std::optional<const char *> from) {
       TileMapEntrace *tile_ptr = dynamic_cast<TileMapEntrace *>(&tile);
       if (tile_ptr) {
         auto maybe_map_from = tile_ptr->from_map();
-        if (maybe_map_from && from) {
+        if (maybe_map_from.has_value() && from.has_value()) {
           if (maybe_map_from->get() == *from) {
             this->entrance = el.get_coord();
             found = true;
             break;
-          } else if (!maybe_map_from && !from) {
-            this->entrance = el.get_coord();
-            found = true;
-            break;
           }
+        } else if (!maybe_map_from.has_value() && !from.has_value()) {
+          this->entrance = el.get_coord();
+          found = true;
+          break;
         }
       }
     }

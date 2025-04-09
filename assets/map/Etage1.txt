@@ -1,9 +1,9 @@
-INDICE ! Indice1.txt
-MAP 1 Etage2.txt
-CADENA X Cadena1.txt
+MAP ! NULL NULL
+MAP E NULL NULL
+MAP 1 Etage2.txt Etage2.txt
+LOCK4 X CADENAE1 1024
 ***
-21
-118
+21 118
 ####   E   ###########################################################################################################
 ####                                                                 #                                               #
 ####                                                                 #                                               #
