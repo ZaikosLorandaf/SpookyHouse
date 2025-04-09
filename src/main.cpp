@@ -282,9 +282,9 @@ void displayLock4(MainWindow* w){
 
     w->text->setText("00");
     w->text->setGeometry(200, 200, 200, 200);
-    //TODO:
-    //QObject::connect(w, &MainWindow::hideHint, ()[*]
-    // w->text->hide(); );
+    QObject::connect(w, &MainWindow::hideHint, [w]() {
+        w->text->hide();
+    });
 }
 
 void displayLockCirculaire(MainWindow* w){
@@ -295,9 +295,10 @@ void displayLockCirculaire(MainWindow* w){
 
     w->text->setText("00");
     w->text->setGeometry(200, 200, 200, 200);
-    //TODO:
-    //QObject::connect(w, &MainWindow::hideHint, ()[*]
-    // w->text->hide(); );
+    QObject::connect(w, &MainWindow::hideHint, [w, label]() {
+        w->text->hide();
+        label->hide();
+    });
 }
 
 void displayNumpad(MainWindow* w){
@@ -306,16 +307,17 @@ void displayNumpad(MainWindow* w){
     label->show();
 
     w->text->setGeometry(200, 200, 200, 200);
-    //TODO:
-    //QObject::connect(w, &MainWindow::hideHint, ()[*]
-    // w->text->hide(); );
+    QObject::connect(w, &MainWindow::hideHint, [w, label]() {
+        w->text->hide();
+        label->hide();
+    });
 }
 
 void displayHint(MainWindow* w, QString s){
     w->text->setText("00");
-    //TODO:
-    //QObject::connect(w, &MainWindow::hideHint, ()[*]
-    // w->text->hide(); );
+    QObject::connect(w, &MainWindow::hideHint, [w]() {
+        w->text->hide();
+    });
 }
 
 void buttonPushed(QPushButton *p, MainWindow *w) {
