@@ -58,5 +58,9 @@ std::optional<std::reference_wrapper<Tile>> Map::get_tile(vec_comp x,
   return this->get_tile(v);
 }
 
+Vec2 Map::get_size() {
+    return this->map_size;
+}
+
 TileEmpty Map::empty_tile;
 TileWall Map::wall_tile;
