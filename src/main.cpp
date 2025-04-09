@@ -121,6 +121,10 @@ void fillScene(MainWindow *w, int roomNumber, const char *t[],
 }
 
 void fillScene2(MainWindow *w, Map& map, int roomNumber) {
+    if (!w->scenes[roomNumber]) {
+        qWarning() << "Room isn't." << roomNumber;
+        return;
+    }
     // Remplir une scene d'images, labels, whatever you need.
     Coordinates imagesize = {50, 50};
     int x = map.get_size().x;
@@ -242,12 +246,14 @@ void createMap(MainWindow *w) {
   QGraphicsView *GV = w->GV;
   GV->setGeometry(-50, -200, 6000, 2000);
   createScene(w);
-  fillScene(w, 0, temp, Coordinates{50, 50});
-  switchRoom(w, 0);
-  GV->show();
+//  fillScene(w, 0, temp, Coordinates{50, 50});
+
 
   Map niveau1("file.txt");
   fillScene2(w, niveau1, 0);
+
+  switchRoom(w, 0);
+  GV->show();
 
   // character
 
@@ -261,6 +267,55 @@ void createMap(MainWindow *w) {
   overlay->resize(1700, 1500);
   overlay->show();
   return;
+}
+
+void numberLockChange(MainWindow* w, int number){
+    const char a = char(number);
+    w->text->setText(QString(a));
+}
+
+void displayLock4(MainWindow* w){
+    //image of the lock4
+    QLabel* label = w->createImageLabelFromPath(":assets/images/rat.png", Size4 {100, 100, 100, 100});
+    label->show();
+    //number of the lock4
+
+    w->text->setText("00");
+    w->text->setGeometry(200, 200, 200, 200);
+    //TODO:
+    //QObject::connect(w, &MainWindow::hideHint, ()[*]
+    // w->text->hide(); );
+}
+
+void displayLockCirculaire(MainWindow* w){
+    //image of the circular lock
+    QLabel* label = w->createImageLabelFromPath(":assets/images/rat.png", Size4 {100, 100, 100, 100});
+    label->show();
+    //number of the circular lock
+
+    w->text->setText("00");
+    w->text->setGeometry(200, 200, 200, 200);
+    //TODO:
+    //QObject::connect(w, &MainWindow::hideHint, ()[*]
+    // w->text->hide(); );
+}
+
+void displayNumpad(MainWindow* w){
+    //image of the numpad
+    QLabel* label = w->createImageLabelFromPath(":assets/images/rat.png", Size4 {100, 100, 100, 100});
+    label->show();
+
+    w->text->setGeometry(200, 200, 200, 200);
+    //TODO:
+    //QObject::connect(w, &MainWindow::hideHint, ()[*]
+    // w->text->hide(); );
+}
+
+void displayHint(MainWindow* w, QString s){
+    w->text->setText("00");
+    //TODO:
+    //QObject::connect(w, &MainWindow::hideHint, ()[*]
+    // w->text->hide(); );
 }
 
 void buttonPushed(QPushButton *p, MainWindow *w) {

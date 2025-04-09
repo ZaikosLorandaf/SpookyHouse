@@ -1,10 +1,10 @@
 #include <loclCirculaire.h>
 #include <assert.h>
 
-lockCirculaire::lockCirculaire(const uint8_t combinaison[3], std::string id){
-    int size = sizeof(this->combination)/sizeof(this->combination[0]);
+lockCirculaire::lockCirculaire(const uint8_t comb[3], std::string id){
+    int size = 3;
     for (int i=0; i<size; i++){
-        this->combination[i] = combinaison[i];
+        this->combination[i] = comb[i];
     }
 }
 
@@ -28,6 +28,13 @@ void lockCirculaire::set_current_input(const uint8_t new_input[3]) {
 lockCirculaire::~lockCirculaire() {
     if (this->active_object)
         this->save_lock();
+}
+
+lockCirculaire::lockCirculaire(lockCirculaire &&rval)
+    : active_object(true), locked(rval.locked) {
+    rval.active_object = false;
+    std::memcpy(this->combination, rval.combination, 3 * sizeof(uint8_t));
+    std::memcpy(this->current_input, rval.current_input, 3 * sizeof(uint8_t));
 }
 
 const char *lockCirculaire::get_id() const { return this->id.c_str(); }

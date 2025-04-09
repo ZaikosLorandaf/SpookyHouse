@@ -41,6 +41,8 @@ public:
     QThread thr;
     W_thread secondary;
 
+    QLabel* text = new QLabel(this);
+
 public slots:
     inline void muon(){
         qDebug() << "muon";
