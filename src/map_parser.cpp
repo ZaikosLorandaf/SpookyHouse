@@ -1,5 +1,7 @@
 #include "lock4.hpp"
 #include "lock4_tile.hpp"
+#include "lockCirculaireTile.h"
+#include "loclCirculaire.h"
 #include "map.hpp"
 #include "tile.hpp"
 #include "tile_map_entrance.hpp"
@@ -57,13 +59,16 @@ std::pair<Vec2, std::vector<TileCoord>> Map::parse_file(const char *file_path) {
       auto ptr =
           std::make_unique<TileMapEntrace>(std::move(from), std::move(to));
       v.emplace_back(symbol_char, std::move(ptr));
-    }
-    /*else if (token == "LOCKTOUR") {
+    } else if (token == "LOCKTOUR") {
       std::string symbol, id, combination;
       ss >> symbol >> id >> combination;
-      auto ptr = std::make_unique<Tile>(size_t num)
-    }*/
-    else {
+      const char symbol_char = symbol.c_str()[0];
+      auto parsed_combination =
+          lockCirculaire::parse_lock_digits(combination.c_str());
+      lockCirculaire lc(parsed_combination.data(), std::move(id));
+      auto ptr = std::make_unique<TileLockCirculaire>(std::move(lc));
+      v.emplace_back(std::make_pair(symbol_char, std::move(ptr)));
+    } else {
       assert(false);
     }
     token.clear();

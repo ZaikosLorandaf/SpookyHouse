@@ -7,16 +7,15 @@
 
 class TileLockCirculaire : public Tile {
 private:
-    lockCirculaire lock_game;
+  lockCirculaire lock_game;
 
 public:
-    TileLockCirculaire(lockCirculaire &&);
-    ~TileLockCirculaire() override = default;
+  TileLockCirculaire(lockCirculaire &&);
+  ~TileLockCirculaire() override = default;
 
-    TileLockCirculaire(TileLockCirculaire &&) = default;
+  TileLockCirculaire(TileLockCirculaire &&) = default;
 
-    lockCirculaire &get_lock();
+  lockCirculaire &get_lock();
 };
-
 
 #endif // LOCKCIRCULAIRETILE_H
