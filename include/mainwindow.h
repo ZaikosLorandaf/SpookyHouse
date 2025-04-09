@@ -50,6 +50,8 @@ public slots:
     }; //0(haut), 1(droit), 2(bas), 3(gauche)
     inline void joystick(int direction){
         qDebug() << "joystick " << direction;
+        this->pc.y -= 1;
+        this->GV->move(this->GV->x(), this->GV->y() + 50);
     }; //0(haut), 1(droit), 2(bas), 3(gauche). peut-etre ajouter diagonale mais pas live
     inline void potentiometre(int direction){
         qDebug() << "potentiometre " << direction;
