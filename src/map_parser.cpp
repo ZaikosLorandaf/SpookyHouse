@@ -1,6 +1,11 @@
+#include "lock4.hpp"
+#include "lock4_tile.hpp"
 #include "map.hpp"
+#include "tile.hpp"
 #include <cassert>
 #include <fstream>
+#include <memory>
+#include <optional>
 #include <sstream>
 #include <string>
 #include <utility>
@@ -10,9 +15,55 @@ std::pair<Vec2, std::vector<TileCoord>> Map::parse_file(const char *file_path) {
   assert(file_path != nullptr);
   std::ifstream file(file_path);
   std::string line;
+  std::string token;
+  std::vector<std::pair<char, std::unique_ptr<Tile>>> v;
   for (; !file.eof(); std::getline(file, line)) {
     if (line == "***")
       break;
+    std::stringstream ss(line);
+    ss >> token;
+    if (token == "LOCK4") {
+      std::string symbol;
+      std::string id;
+      std::string combination;
+      ss >> symbol >> id >> combination;
+      uint8_t combination_parsed[4] = {0};
+      size_t i = 0;
+      for (const char c : combination) {
+        if (i >= 4)
+          break;
+        combination_parsed[i] = (uint8_t)(c) - '0';
+      }
+      Lock4Game game(combination_parsed, id.c_str());
+      auto ptr = std::make_unique<TileLock4>(std::move(game));
+      v.emplace_back(std::make_pair(std::move(symbol), std::move(ptr)));
+    } else if (token == "MAP") {
+      std::string symbol;
+      std::string from_path;
+      std::string to_path;
+      ss >> symbol >> from_path >> to_path;
+      std::optional<std::string> to, from;
+      if (from_path == "NULL")
+        from = {};
+      else
+        from = std::move(from_path);
+      if (to_path == "NULL")
+        to = {};
+      else
+        to = std::move(to_path);
+      auto ptr =
+          std::make_unique<TileMapEntrace>(std::move(from), std::move(to));
+      v.emplace_back(std::move(symbol), std::move(ptr));
+    }
+    /*else if (token == "LOCKTOUR") {
+      std::string symbol, id, combination;
+      ss >> symbol >> id >> combination;
+      auto ptr = std::make_unique<Tile>(size_t num)
+    }*/
+    else {
+      assert(false);
+    }
+    token.clear();
   }
   line.clear();
   assert(!file.eof());
@@ -31,6 +82,20 @@ std::pair<Vec2, std::vector<TileCoord>> Map::parse_file(const char *file_path) {
       } else if (c == '#') {
         tiles.emplace_back(x, y, nullptr);
       } else {
+#ifndef NDEBUG
+        bool found = false;
+#endif
+        for (auto &el : v) {
+          if (el.first == c) {
+            assert(el.second.get() != nullptr);
+            tiles.emplace_back(x, y, std::move(el.second));
+#ifndef NDEBUG
+            found = true;
+#endif
+            break;
+          }
+        }
+        assert(found);
       }
       x++;
     }

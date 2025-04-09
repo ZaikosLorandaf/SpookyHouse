@@ -1,4 +1,5 @@
 #include "tile_coord.hpp"
+#include "vec2.hpp"
 #include <functional>
 #include <memory>
 #include <optional>
@@ -76,3 +77,6 @@ TileCoord &TileCoord::operator=(TileCoord &&rval) {
   this->coord = std::move(rval.coord);
   return *this;
 }
+
+TileCoord::TileCoord(vec_comp x, vec_comp y, std::unique_ptr<Tile> &&ptr)
+    : tile(std::move(ptr)), coord(x, y) {}

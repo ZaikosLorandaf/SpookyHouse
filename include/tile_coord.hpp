@@ -15,6 +15,7 @@ public:
   ~TileCoord() = default; // default destructor is fine
   TileCoord(Vec2 coord, Tile *tile);
   TileCoord(vec_comp x, vec_comp y, Tile *tile);
+  TileCoord(vec_comp x, vec_comp y, std::unique_ptr<Tile> &&);
 
   TileCoord(const TileCoord &) = delete;
   TileCoord(TileCoord &&);
