@@ -1,7 +1,7 @@
 #include "lock4.hpp"
 #include "lock4_tile.hpp"
+#include "lockCirculaire.h"
 #include "lockCirculaireTile.h"
-#include "loclCirculaire.h"
 #include "map.hpp"
 #include "tile.hpp"
 #include "tile_map_entrance.hpp"

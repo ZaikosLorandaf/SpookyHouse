@@ -2,7 +2,7 @@
 #define LOCKCIRCULAIRETILE_H
 
 #pragma once
-#include "loclCirculaire.h"
+#include "lockCirculaire.h"
 #include "tile.hpp"
 
 class TileLockCirculaire : public Tile {
