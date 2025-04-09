@@ -27,6 +27,7 @@ std::pair<Vec2, std::vector<TileCoord>> Map::parse_file(const char *file_path) {
       std::string id;
       std::string combination;
       ss >> symbol >> id >> combination;
+      const char symbol_char = symbol.c_str()[0];
       uint8_t combination_parsed[4] = {0};
       size_t i = 0;
       for (const char c : combination) {
@@ -36,12 +37,13 @@ std::pair<Vec2, std::vector<TileCoord>> Map::parse_file(const char *file_path) {
       }
       Lock4Game game(combination_parsed, id.c_str());
       auto ptr = std::make_unique<TileLock4>(std::move(game));
-      v.emplace_back(std::make_pair(std::move(symbol), std::move(ptr)));
+      v.emplace_back(std::make_pair(symbol_char, std::move(ptr)));
     } else if (token == "MAP") {
       std::string symbol;
       std::string from_path;
       std::string to_path;
       ss >> symbol >> from_path >> to_path;
+      const char symbol_char = symbol.c_str()[0];
       std::optional<std::string> to, from;
       if (from_path == "NULL")
         from = {};
@@ -53,7 +55,7 @@ std::pair<Vec2, std::vector<TileCoord>> Map::parse_file(const char *file_path) {
         to = std::move(to_path);
       auto ptr =
           std::make_unique<TileMapEntrace>(std::move(from), std::move(to));
-      v.emplace_back(std::move(symbol), std::move(ptr));
+      v.emplace_back(symbol_char, std::move(ptr));
     }
     /*else if (token == "LOCKTOUR") {
       std::string symbol, id, combination;
