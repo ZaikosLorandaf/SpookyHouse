@@ -3,7 +3,6 @@
 #include "map.hpp"
 
 #include <QApplication>
-// #include <conio.h>
 
 const char *temp[] = {
     "####       "
@@ -178,26 +177,7 @@ void switchRoom(MainWindow *w, int roomNumber) {
 }
 
 void move(MainWindow *w, int key) {
-  // Lorsqu'on recoit un user input. Peut-etre meme pas un mouvement mais une
-  // interaction.
-
-  // Tests.
-  //     qDebug() << "posx" << w->pc.x;
-  //     qDebug() << "posy" << w->pc.y;
-  //     qDebug() << key;
-  /*
-   * W: 87
-   * A: 65
-   * S: 83
-   * D: 68
-   * Q: 81
-   */
-  // qDebug() << (w->pc.x + 1 >=0) << (w->pc.x + 1 < 121) <<
-  // (temp[w->pc.x+1][w->pc.y] != '#');
-
-  // qDebug() << w->pc.x << "  " << w->pc.y;
-  // qDebug() <<( w->pc.y - 1 >= 0) << (temp[int(w->pc.x)][int(w->pc.y -1)] !=
-  // '#'); qDebug() << temp[int(w->pc.y -1)][int(w->pc.x)];
+  // Deplacement (LEGACY)
   switch (key) {
   case 87:
     if (w->pc.y - 1 >= 0 && temp[int(w->pc.y - 1)][int(w->pc.x)] != '#') {
@@ -232,8 +212,6 @@ void move(MainWindow *w, int key) {
   case 81:
     return;
   }
-
-  //    updateGUI(w, w->pc);
 
   return;
 }

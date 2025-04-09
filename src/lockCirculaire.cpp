@@ -1,4 +1,5 @@
-#include <loclCirculaire.h>
+#include <cstring>
+#include "loclCirculaire.h"
 #include <assert.h>
 
 lockCirculaire::lockCirculaire(const uint8_t comb[3], std::string id){
