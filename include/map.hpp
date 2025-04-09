@@ -14,23 +14,28 @@ private:
   static std::pair<Vec2, std::vector<TileCoord>>
   parse_file(const char *file_path);
 
+  Vec2 entrance;
+
   static TileEmpty empty_tile;
   static TileWall wall_tile;
 
 public:
-  Map(const char *file_path);
+  Map(const char *file_path, std::optional<const char *> from = {});
   Map(const std::string &file_path);
   // Map(const Map &);
-  Map(Map &&);
+  Map(Map &&) = default;
   Map() = delete;
   ~Map() = default;
 
-  std::optional<std::reference_wrapper<Tile>> get_tile(vec_comp x,
-                                                       vec_comp y) const;
-  std::optional<std::reference_wrapper<Tile>> get_tile(Vec2 coord) const;
+  std::optional<std::reference_wrapper<Tile>> get_tile(vec_comp x, vec_comp y);
+  std::optional<std::reference_wrapper<Tile>> get_tile(Vec2 coord);
 
   Vec2 get_size();
 
   // Map &operator=(const Map &);
-  Map &operator=(Map &&);
+  Map &operator=(Map &&) = default;
+
+  Vec2 get_entrance();
+
+  const std::string &get_file_name() const;
 };
