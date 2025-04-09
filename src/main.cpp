@@ -282,8 +282,9 @@ void displayLock4(MainWindow* w){
 
     w->text->setText("00");
     w->text->setGeometry(200, 200, 200, 200);
-    QObject::connect(w, &MainWindow::hideHint, [w]() {
+    QObject::connect(w, &MainWindow::hideHint, w, [w, label]() {
         w->text->hide();
+        label->hide();
     });
 }
 
@@ -295,7 +296,7 @@ void displayLockCirculaire(MainWindow* w){
 
     w->text->setText("00");
     w->text->setGeometry(200, 200, 200, 200);
-    QObject::connect(w, &MainWindow::hideHint, [w, label]() {
+    QObject::connect(w, &MainWindow::hideHint, w, [w, label]() {
         w->text->hide();
         label->hide();
     });
@@ -307,7 +308,7 @@ void displayNumpad(MainWindow* w){
     label->show();
 
     w->text->setGeometry(200, 200, 200, 200);
-    QObject::connect(w, &MainWindow::hideHint, [w, label]() {
+    QObject::connect(w, &MainWindow::hideHint, w, [w, label]() {
         w->text->hide();
         label->hide();
     });
