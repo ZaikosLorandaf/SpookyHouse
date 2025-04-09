@@ -2,6 +2,7 @@
 #include "lock4_tile.hpp"
 #include "map.hpp"
 #include "tile.hpp"
+#include "tile_map_entrance.hpp"
 #include <cassert>
 #include <fstream>
 #include <memory>
