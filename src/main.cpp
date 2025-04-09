@@ -135,6 +135,7 @@ void fillScene2(MainWindow *w, Map& map, int roomNumber) {
             auto maybe_tile = map.get_tile(i, j);
             assert(maybe_tile);
             Tile& tile = *maybe_tile;
+            //TODO: add other tiles
             TileWall* wall = dynamic_cast<TileWall*>(&tile);
             TileEmpty* empty = dynamic_cast<TileEmpty*>(&tile);
             if (wall) {
@@ -214,6 +215,71 @@ void move(MainWindow *w, int key) {
   }
 
   return;
+}
+
+void move2(MainWindow *w, int key, Map map){
+    // Deplacement
+    if(key == 87){ //UP
+        //TODO: add other TILE classes (door, entrance, ...)
+        auto maybe_tile = map.get_tile(w->pc.x, w->pc.y - 1);
+        assert(maybe_tile);
+        Tile& tile = *maybe_tile;
+        TileWall* wall = dynamic_cast<TileWall*>(&tile);
+        TileEmpty* empty = dynamic_cast<TileEmpty*>(&tile);
+        if(empty){
+            w->pc.y -= 1;
+            w->GV->move(w->GV->x(), w->GV->y() + 50);
+        }
+        if(wall){
+            return;
+        }
+    }
+    if(key == 83){ //DOWN
+        //TODO: add other TILE classes (door, entrance, ...)
+        auto maybe_tile = map.get_tile(w->pc.x, w->pc.y + 1);
+        assert(maybe_tile);
+        Tile& tile = *maybe_tile;
+        TileWall* wall = dynamic_cast<TileWall*>(&tile);
+        TileEmpty* empty = dynamic_cast<TileEmpty*>(&tile);
+        if(empty){
+            w->pc.y += 1;
+            w->GV->move(w->GV->x(), w->GV->y() - 50);
+        }
+        if(wall){
+            return;
+        }
+    }
+    if(key == 65){ //LEFT
+        //TODO: add other TILE classes (door, entrance, ...)
+        auto maybe_tile = map.get_tile(w->pc.x - 1, w->pc.y);
+        assert(maybe_tile);
+        Tile& tile = *maybe_tile;
+        TileWall* wall = dynamic_cast<TileWall*>(&tile);
+        TileEmpty* empty = dynamic_cast<TileEmpty*>(&tile);
+        if(empty){
+            w->pc.x -= 1;
+            w->GV->move(w->GV->x() + 50, w->GV->y());
+        }
+        if(wall){
+            return;
+        }
+    }
+    if(key == 65){ //RIGHT
+        //TODO: add other TILE classes (door, entrance, ...)
+        auto maybe_tile = map.get_tile(w->pc.x + 1, w->pc.y);
+        assert(maybe_tile);
+        Tile& tile = *maybe_tile;
+        TileWall* wall = dynamic_cast<TileWall*>(&tile);
+        TileEmpty* empty = dynamic_cast<TileEmpty*>(&tile);
+        if(empty){
+            w->pc.x += 1;
+            w->GV->move(w->GV->x() - 50, w->GV->y());
+        }
+        if(wall){
+            return;
+        }
+    }
+    return;
 }
 
 void createMap(MainWindow *w) {
