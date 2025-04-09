@@ -29,6 +29,8 @@ public:
                                                        vec_comp y) const;
   std::optional<std::reference_wrapper<Tile>> get_tile(Vec2 coord) const;
 
+  Vec2 get_size();
+
   // Map &operator=(const Map &);
   Map &operator=(Map &&);
 };
