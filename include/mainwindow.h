@@ -79,6 +79,7 @@ protected:
 signals:
     void buttonClicked(QPushButton* b, MainWindow* a);
     void keyPressed(MainWindow *a, int key);
+    void hideHint();
 
 };
 #endif // MAINWINDOW_H
