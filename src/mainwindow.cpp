@@ -43,6 +43,7 @@ MainWindow::MainWindow(QWidget *parent)
   connect(&secondary, &W_thread::jumpscare, this, &MainWindow::jumpscare);
   connect(&secondary, &W_thread::potentiometre, this, &MainWindow::potentiometre);
   connect(&secondary, &W_thread::numpad, this, &MainWindow::numpad);
+  connect(&secondary, &W_thread::accelerometre, this, &MainWindow::accelerometre);
 }
 
 MainWindow::~MainWindow() {

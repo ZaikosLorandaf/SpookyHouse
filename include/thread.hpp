@@ -78,6 +78,7 @@ signals:
   void numpad(QString car);
   void done(); // quand appli ferme
   void jumpscare();
+  void accelerometre(float a);
 public slots:
   void stop() { running = false; }
   void doStuff();
