@@ -54,7 +54,18 @@ public slots:
         qDebug() << "bouton " << bouton;
     }; //0(haut), 1(droit), 2(bas), 3(gauche)
     inline void joystick(int direction){
-        emit joyS(direction);
+        if(direction==0){
+            emit keyPressed(this, 87);
+        }
+        if(direction==1){
+            emit keyPressed(this, 68);
+        }
+        if(direction==2){
+            emit keyPressed(this, 83);
+        }
+        if(direction==3){
+            emit keyPressed(this, 65);
+        }
         qDebug() << "joystick " << direction;
     }; //0(haut), 1(droit), 2(bas), 3(gauche). peut-etre ajouter diagonale mais pas live
     inline void potentiometre(int direction){
@@ -68,6 +79,7 @@ public slots:
         l->show();
         QThread::msleep(1000);
         l->hide();
+        delete(l);
     };
     inline void accelerometre(float a){
 
@@ -90,7 +102,6 @@ signals:
     void buttonClicked(QPushButton* b, MainWindow* a);
     void keyPressed(MainWindow *a, int key);
     void hideHint();
-    void joyS(int direction);
     void startGame(MainWindow* a);
 
 };
