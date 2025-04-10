@@ -146,7 +146,7 @@ void fillScene2(MainWindow *w, Map &map, int roomNumber) {
         const char *path = ":/assets/images/wall.png";
         QGraphicsPixmapItem *q = createPixmap(path, imagesize);
         w->scenes[roomNumber]->addItem(q);
-        q->setPos(j * imagesize.x, i * imagesize.y);
+        q->setPos(i * imagesize.x, j * imagesize.y);
       }
       if (empty) {
         int rand = std::rand() % 3;
@@ -154,17 +154,17 @@ void fillScene2(MainWindow *w, Map &map, int roomNumber) {
           const char *path = ":/assets/images/floor1.png";
           QGraphicsPixmapItem *q = createPixmap(path, imagesize);
           w->scenes[roomNumber]->addItem(q);
-          q->setPos(j * imagesize.x, i * imagesize.y);
+          q->setPos(i * imagesize.x, j * imagesize.y);
         } else if (rand == 1) {
           const char *path = ":/assets/images/floor2.png";
           QGraphicsPixmapItem *q = createPixmap(path, imagesize);
           w->scenes[roomNumber]->addItem(q);
-          q->setPos(j * imagesize.x, i * imagesize.y);
+          q->setPos(i * imagesize.x, j * imagesize.y);
         } else {
           const char *path = ":/assets/images/floor3.png";
           QGraphicsPixmapItem *q = createPixmap(path, imagesize);
           w->scenes[roomNumber]->addItem(q);
-          q->setPos(j * imagesize.x, i * imagesize.y);
+          q->setPos(i * imagesize.x, j * imagesize.y);
         }
       }
     }
@@ -399,7 +399,7 @@ int main(int argc, char *argv[]) {
       buttonPushed(p, w);
       fillScene2(w, niveau1, 0);
       w->GV->setScene(w->scenes[0]);
-      w->GV->setGeometry(50, -200, 2000, 2000);
+      w->GV->setGeometry(-2025, -225, 6000, 2000);
 
       w->GV->show();
   });
