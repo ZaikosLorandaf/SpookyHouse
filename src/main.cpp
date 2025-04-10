@@ -399,7 +399,7 @@ int main(int argc, char *argv[]) {
       buttonPushed(p, w);
       fillScene2(w, niveau1, 0);
       w->GV->setScene(w->scenes[0]);
-      w->GV->setGeometry(-2025, -225, 6000, 2000);
+      w->GV->setGeometry(-50, -200, 6000, 2000);
 
       w->GV->show();
   });
