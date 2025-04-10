@@ -48,6 +48,9 @@ public slots:
         qDebug() << "muon";
     };
     inline void bouton(int bouton){
+        if(bouton == 1){
+            emit startGame();
+        }
         qDebug() << "bouton " << bouton;
     }; //0(haut), 1(droit), 2(bas), 3(gauche)
     inline void joystick(int direction){
@@ -85,6 +88,7 @@ signals:
     void keyPressed(MainWindow *a, int key);
     void hideHint();
     void joyS(int direction);
+    void startGame();
 
 };
 #endif // MAINWINDOW_H

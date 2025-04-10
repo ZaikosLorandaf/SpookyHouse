@@ -304,7 +304,7 @@ void createMap(MainWindow *w) {
 
   // character
 
-  QLabel *a = w->createImageLabelFromPath(":assets/images/rat.png",
+  QLabel *a = w->createImageLabelFromPath(":/assets/images/Oscilloscope.webp",
                                           Size4{600, 575, 50, 50});
   a->show();
 
@@ -323,7 +323,7 @@ void numberLockChange(MainWindow *w, int number) {
 
 void displayLock4(MainWindow *w) {
   // image of the lock4
-  QLabel *label = w->createImageLabelFromPath(":assets/images/rat.png",
+  QLabel *label = w->createImageLabelFromPath(":/assets/images/Lock4.jpg",
                                               Size4{100, 100, 100, 100});
   label->show();
   // number of the lock4
@@ -338,7 +338,7 @@ void displayLock4(MainWindow *w) {
 
 void displayLockCirculaire(MainWindow *w) {
   // image of the circular lock
-  QLabel *label = w->createImageLabelFromPath(":assets/images/rat.png",
+  QLabel *label = w->createImageLabelFromPath(":/assets/images/LockCirculaire.jpg",
                                               Size4{100, 100, 100, 100});
   label->show();
   // number of the circular lock
@@ -353,7 +353,7 @@ void displayLockCirculaire(MainWindow *w) {
 
 void displayNumpad(MainWindow *w) {
   // image of the numpad
-  QLabel *label = w->createImageLabelFromPath(":assets/images/rat.png",
+  QLabel *label = w->createImageLabelFromPath(":/assets/images/numpad.webp",
                                               Size4{100, 100, 100, 100});
   label->show();
 
@@ -388,7 +388,7 @@ int main(int argc, char *argv[]) {
   size4.x2 = 256;
   size4.y2 = 75;
 
-  w.createPushButton(":/assets/images/StartGame001.png", size4);
+  QPushButton* b = w.createPushButton(":/assets/images/StartGame001.png", size4);
 
   createScene(&w);
 
@@ -405,6 +405,18 @@ int main(int argc, char *argv[]) {
   });
   QObject::connect(&w, &MainWindow::keyPressed, [&niveau1](MainWindow* w, int key){
       move2(w, key, niveau1);
+  });
+
+  QObject::connect(&w, &MainWindow::startGame, [b, &niveau1](MainWindow* w){
+      if(b){
+          buttonPushed(b, w);
+          fillScene2(w, niveau1, 0);
+          w->GV->setScene(w->scenes[0]);
+          w->GV->setGeometry(-50, -200, 6000, 2000);
+
+          w->GV->show();
+      }
+
   });
 
   return a.exec();
