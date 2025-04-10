@@ -101,6 +101,8 @@ std::pair<Vec2, std::vector<TileCoord>> Map::parse_file(const char *file_path) {
   std::vector<TileCoord> tiles;
   vec_comp x = 0, y = 0;
   for (line.clear(); !file.eof(); std::getline(file, line)) {
+    if (line.empty())
+      continue;
     x = 0;
     auto end = line.end();
     for (auto i = line.begin(); i != end; i++) {
