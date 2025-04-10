@@ -8,7 +8,7 @@
 
 #include "Coordinates.h"
 #include "thread.hpp"
-
+#include "map.hpp"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
