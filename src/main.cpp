@@ -143,7 +143,6 @@ void fillScene2(MainWindow *w, Map &map, int roomNumber) {
       TileWall *wall = dynamic_cast<TileWall *>(&tile);
       TileEmpty *empty = dynamic_cast<TileEmpty *>(&tile);
       if (wall) {
-          qDebug() << "Wall";
         const char *path = ":/assets/images/wall.png";
         QGraphicsPixmapItem *q = createPixmap(path, imagesize);
         w->scenes[roomNumber]->addItem(q);
@@ -265,14 +264,13 @@ void move2(MainWindow *w, int key, Map &map) {
     TileEmpty *empty = dynamic_cast<TileEmpty *>(&tile);
     if (empty) {
       w->pc.x -= 1;
-        w->GV->translate(50, 0);
-  //    w->GV->move(w->GV->x() + 50, w->GV->y());
+      w->GV->move(w->GV->x() + 50, w->GV->y());
     }
     if (wall) {
       return;
     }
   }
-  if (key == 65 && w->pc.x +1 < mapsize.x) { // RIGHT
+  if (key == 68 && w->pc.x +1 < mapsize.x) { // RIGHT
     // TODO: add other TILE classes (door, entrance, ...)
     auto maybe_tile = map.get_tile(w->pc.x + 1, w->pc.y);
     assert(maybe_tile);
