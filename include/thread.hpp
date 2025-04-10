@@ -187,6 +187,8 @@ inline void W_thread::doStuff() {
         if (!jsonmsg["bDo"].is_null()) {
           int bDownVal = jsonmsg["bDo"];
           if (bDownVal == 1) {
+              emit bouton(4);
+
             // button down
           } else {
             // stop button down
@@ -196,6 +198,7 @@ inline void W_thread::doStuff() {
           int bLeftVal = jsonmsg["bLe"];
           if (bLeftVal == 1) {
             // button left
+              emit bouton(2);
           } else {
             // stop button left
           }
@@ -204,6 +207,7 @@ inline void W_thread::doStuff() {
           int bRightVal = jsonmsg["bRi"];
           if (bRightVal == 1) {
             // button right
+              emit bouton(3);
           } else {
             // stop button right
           }

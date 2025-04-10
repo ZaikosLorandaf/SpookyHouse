@@ -55,6 +55,15 @@ public slots:
         if(bouton == 1){
             emit startGame(this);
         }
+        if(bouton == 2){
+            emit keyPressed(this, 74);
+        }
+        if(bouton == 3){
+            emit keyPressed(this, 75);
+        }
+        if(bouton == 4){
+            emit keyPressed(this, 73);
+        }
         qDebug() << "bouton " << bouton;
     }; //0(haut), 1(droit), 2(bas), 3(gauche)
     inline void joystick(int direction){
