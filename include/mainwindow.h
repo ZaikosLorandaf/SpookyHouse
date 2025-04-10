@@ -69,6 +69,9 @@ public slots:
         QThread::msleep(1000);
         l->hide();
     };
+    inline void accelerometre(float a){
+
+    }
 
 private:
     Ui::MainWindow *ui;
