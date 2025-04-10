@@ -143,6 +143,7 @@ void fillScene2(MainWindow *w, Map &map, int roomNumber) {
       TileWall *wall = dynamic_cast<TileWall *>(&tile);
       TileEmpty *empty = dynamic_cast<TileEmpty *>(&tile);
       if (wall) {
+          qDebug() << "Wall";
         const char *path = ":/assets/images/wall.png";
         QGraphicsPixmapItem *q = createPixmap(path, imagesize);
         w->scenes[roomNumber]->addItem(q);
@@ -264,7 +265,8 @@ void move2(MainWindow *w, int key, Map &map) {
     TileEmpty *empty = dynamic_cast<TileEmpty *>(&tile);
     if (empty) {
       w->pc.x -= 1;
-      w->GV->move(w->GV->x() + 50, w->GV->y());
+        w->GV->translate(50, 0);
+  //    w->GV->move(w->GV->x() + 50, w->GV->y());
     }
     if (wall) {
       return;
@@ -399,7 +401,7 @@ int main(int argc, char *argv[]) {
       buttonPushed(p, w);
       fillScene2(w, niveau1, 0);
       w->GV->setScene(w->scenes[0]);
-      w->GV->setGeometry(0, 0, 800, 600);
+      w->GV->setGeometry(50, -200, 2000, 2000);
 
       w->GV->show();
   });
