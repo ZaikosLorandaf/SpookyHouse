@@ -49,7 +49,7 @@ public slots:
     };
     inline void bouton(int bouton){
         if(bouton == 1){
-            emit startGame();
+            emit startGame(this);
         }
         qDebug() << "bouton " << bouton;
     }; //0(haut), 1(droit), 2(bas), 3(gauche)
@@ -88,7 +88,7 @@ signals:
     void keyPressed(MainWindow *a, int key);
     void hideHint();
     void joyS(int direction);
-    void startGame();
+    void startGame(MainWindow* a);
 
 };
 #endif // MAINWINDOW_H

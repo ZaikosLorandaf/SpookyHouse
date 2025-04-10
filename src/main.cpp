@@ -407,7 +407,7 @@ int main(int argc, char *argv[]) {
       move2(w, key, niveau1);
   });
 
-  QObject::connect(&w, &MainWindow::startGame, [b, &niveau1](MainWindow* w){
+  QObject::connect(&w, &MainWindow::startGame, [&b, &niveau1](MainWindow* w){
       if(b){
           buttonPushed(b, w);
           fillScene2(w, niveau1, 0);
