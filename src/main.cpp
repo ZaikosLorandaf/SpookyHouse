@@ -120,7 +120,7 @@ void fillScene(MainWindow *w, int roomNumber, const char *t[],
 }
 
 void fillScene2(MainWindow *w, Map &map, int roomNumber) {
-  if (!w->scenes[roomNumber]) {
+  if (roomNumber > w->scenes.size() || roomNumber < 0) {
     qWarning() << "Room isn't." << roomNumber;
     return;
   }
@@ -293,7 +293,7 @@ void createMap(MainWindow *w) {
 
   QGraphicsView *GV = w->GV;
   GV->setGeometry(-50, -200, 6000, 2000);
-  createScene(w);
+
   //  fillScene(w, 0, temp, Coordinates{50, 50});
 
 
@@ -388,6 +388,8 @@ int main(int argc, char *argv[]) {
   size4.y2 = 75;
 
   w.createPushButton(":/assets/images/StartGame001.png", size4);
+
+  createScene(&w);
 
   Map niveau1("assets/map/Etage1.txt");
   fillScene2(&w, niveau1, 0);
