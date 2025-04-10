@@ -31,6 +31,7 @@ class W_thread : public QObject {
   bool running = true;
 
 public:
+  int bup = 0;
   SerialPort *arduino; // doit etre un objet global!
   bool SendToSerial(SerialPort *arduino, json j_msg) {
     // Return 0 if error
@@ -175,7 +176,8 @@ inline void W_thread::doStuff() {
         //qDebug()<< jsonmsg;
         if (!jsonmsg["bUp"].is_null()) {
           int bUpVal = jsonmsg["bUp"];
-          if (bUpVal == 1) {
+          if (bUpVal == 1 && bup == 0) {
+              bup = 1;
               emit bouton(1);
             // button up
           } else {
