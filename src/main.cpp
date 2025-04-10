@@ -223,9 +223,11 @@ void move(MainWindow *w, int key) {
 
 void move2(MainWindow *w, int key, Map &map) {
   // Deplacement
-  if (key == 87) { // UP
+    Vec2 mapsize = map.get_size();
+  if (key == 87 && w->pc.y -1 > 0) { // UP
     // TODO: add other TILE classes (door, entrance, ...)
     auto maybe_tile = map.get_tile(w->pc.x, w->pc.y - 1);
+
     assert(maybe_tile);
     Tile &tile = *maybe_tile;
     TileWall *wall = dynamic_cast<TileWall *>(&tile);
@@ -238,7 +240,7 @@ void move2(MainWindow *w, int key, Map &map) {
       return;
     }
   }
-  if (key == 83) { // DOWN
+  if (key == 83 && w->pc.y +1 < mapsize.y) { // DOWN
     // TODO: add other TILE classes (door, entrance, ...)
     auto maybe_tile = map.get_tile(w->pc.x, w->pc.y + 1);
     assert(maybe_tile);
@@ -253,7 +255,7 @@ void move2(MainWindow *w, int key, Map &map) {
       return;
     }
   }
-  if (key == 65) { // LEFT
+  if (key == 65 && w->pc.x -1 > 0) { // LEFT
     // TODO: add other TILE classes (door, entrance, ...)
     auto maybe_tile = map.get_tile(w->pc.x - 1, w->pc.y);
     assert(maybe_tile);
@@ -268,7 +270,7 @@ void move2(MainWindow *w, int key, Map &map) {
       return;
     }
   }
-  if (key == 65) { // RIGHT
+  if (key == 65 && w->pc.x +1 < mapsize.x) { // RIGHT
     // TODO: add other TILE classes (door, entrance, ...)
     auto maybe_tile = map.get_tile(w->pc.x + 1, w->pc.y);
     assert(maybe_tile);
