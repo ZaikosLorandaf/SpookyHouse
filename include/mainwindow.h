@@ -51,6 +51,7 @@ public slots:
         qDebug() << "bouton " << bouton;
     }; //0(haut), 1(droit), 2(bas), 3(gauche)
     inline void joystick(int direction){
+        emit joyS(direction);
         qDebug() << "joystick " << direction;
     }; //0(haut), 1(droit), 2(bas), 3(gauche). peut-etre ajouter diagonale mais pas live
     inline void potentiometre(int direction){
@@ -60,7 +61,10 @@ public slots:
         qDebug() << "numpad " << car;
     };
     inline void jumpscare(){
-        qDebug() << "jumpscare";
+        QLabel* l = createImageLabelFromPath(":/assets/images/Serge001.jpg", Size4 {0, 0, 2000, 1000});
+        l->show();
+        QThread::msleep(1000);
+        l->hide();
     };
 
 private:
@@ -80,6 +84,7 @@ signals:
     void buttonClicked(QPushButton* b, MainWindow* a);
     void keyPressed(MainWindow *a, int key);
     void hideHint();
+    void joyS(int direction);
 
 };
 #endif // MAINWINDOW_H
