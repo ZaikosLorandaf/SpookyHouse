@@ -478,6 +478,7 @@ int main(int argc, char *argv[]) {
 
 
   QObject::connect(&w, &MainWindow::buttonClicked, [&niveau1](QPushButton* p, MainWindow* w){
+      w->l->hide();
       buttonPushed(p, w);
       fillScene2(w, niveau1, 0);
       w->GV->setScene(w->scenes[0]);
@@ -487,10 +488,12 @@ int main(int argc, char *argv[]) {
   });
   QObject::connect(&w, &MainWindow::keyPressed, [&niveau1](MainWindow* w, int key){
       move2(w, key, niveau1);
+      w->l->hide();
   });
 
   QObject::connect(&w, &MainWindow::startGame, [&b, &niveau1](MainWindow* w){
       if(b){
+          w->l->hide();
           buttonPushed(b, w);
           fillScene2(w, niveau1, 0);
           w->GV->setScene(w->scenes[0]);

@@ -42,6 +42,7 @@ public:
     W_thread secondary;
 
     QLabel* text = new QLabel(this);
+    QLabel* l = createImageLabelFromPath(":/assets/images/Serge001.jpg", Size4 {0, -500, 2000, 2000});
 
     inline void requestHideHing(){
         emit hideHint();
@@ -67,6 +68,7 @@ public slots:
         qDebug() << "bouton " << bouton;
     }; //0(haut), 1(droit), 2(bas), 3(gauche)
     inline void joystick(int direction){
+        this->l->hide();
         if(direction==0){
             emit keyPressed(this, 87);
         }
@@ -88,11 +90,8 @@ public slots:
         qDebug() << "numpad " << car;
     };
     inline void jumpscare(){
-        QLabel* l = createImageLabelFromPath(":/assets/images/Serge001.jpg", Size4 {0, 0, 100, 100});
+        qDebug() << "jumpsacre";
         l->show();
-        QThread::msleep(1000);
-        l->hide();
-        delete(l);
     };
     inline void accelerometrex(int a){
         qDebug()<<"test accelx working";

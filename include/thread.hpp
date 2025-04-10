@@ -241,6 +241,7 @@ inline void W_thread::doStuff() {
           int accelXval = jsonmsg["accX"];
             if(accelXval == 1 || accelXval == 10){
                 emit accelerometrex(accelXval);
+                emit jumpscare();
 
             }          // change accelerometer X value
         }
@@ -249,6 +250,7 @@ inline void W_thread::doStuff() {
 
             if(accelYval == 1 || accelYval == 10){
                 emit accelerometrey(accelYval);
+                emit jumpscare();
 
             }
           // change accelerometer Y value
@@ -257,6 +259,7 @@ inline void W_thread::doStuff() {
           int accelZval = jsonmsg["accZ"];
             if(accelZval == 1 || accelZval == 10){
               emit accelerometrez(accelZval);
+                emit jumpscare();
 
             }
 
