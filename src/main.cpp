@@ -2,6 +2,7 @@
 #include "mainwindow.h"
 #include "map.hpp"
 #include "tile_hint.hpp"
+#include "lockCirculaireTile.h"
 
 #include <QApplication>
 
@@ -49,6 +50,10 @@ const char *temp[] = {
     "#################################################",
     "##########################################################################"
     "############################################"};
+
+int combinaisonCirculaire[3] = {3,8,3};
+int actualCombinaisonLockCirculaire[3] = {0,0,0};
+int curSelectrion = 0;
 
 // je pense qu'on peut juste utiliser genre un qframe ou qqchose du genre
 class DarkOverlay : public QWidget {
@@ -227,6 +232,21 @@ void move(MainWindow *w, int key) {
   return;
 }
 
+void displayLockCirculaire(MainWindow *w) {
+    // image of the circular lock
+    QLabel *label = w->createImageLabelFromPath(":/assets/images/LockCirculaire.jpg",
+                                                Size4{100, 100, 100, 100});
+    label->show();
+    // number of the circular lock
+
+    w->text->setText("00");
+    w->text->setGeometry(200, 200, 200, 200);
+    QObject::connect(w, &MainWindow::hideHint, w, [w, label]() {
+        w->text->hide();
+        label->hide();
+    });
+}
+
 void move2(MainWindow *w, int key, Map &map) {
   // Deplacement
     Vec2 mapsize = map.get_size();
@@ -239,6 +259,7 @@ void move2(MainWindow *w, int key, Map &map) {
     TileWall *wall = dynamic_cast<TileWall *>(&tile);
     TileEmpty *empty = dynamic_cast<TileEmpty *>(&tile);
     TileHint *hint = dynamic_cast<TileHint*>(&tile);
+    TileLockCirculaire *circ = dynamic_cast<TileLockCirculaire*>(&tile);
     if (empty) {
       w->pc.y -= 1;
       w->GV->move(w->GV->x(), w->GV->y() + 50);
@@ -249,6 +270,9 @@ void move2(MainWindow *w, int key, Map &map) {
     if(hint){
         displayHint(w, QString("HELLO"));
     }
+    if(circ){
+        displayLockCirculaire(w);
+    }
   }
   if (key == 83 && w->pc.y +1 < mapsize.y) { // DOWN
     // TODO: add other TILE classes (door, entrance, ...)
@@ -258,6 +282,7 @@ void move2(MainWindow *w, int key, Map &map) {
     TileWall *wall = dynamic_cast<TileWall *>(&tile);
     TileEmpty *empty = dynamic_cast<TileEmpty *>(&tile);
     TileHint *hint = dynamic_cast<TileHint*>(&tile);
+    TileLockCirculaire *circ = dynamic_cast<TileLockCirculaire*>(&tile);
     if (empty) {
       w->pc.y += 1;
       w->GV->move(w->GV->x(), w->GV->y() - 50);
@@ -266,7 +291,10 @@ void move2(MainWindow *w, int key, Map &map) {
       return;
     }
     if(hint){
-        displayHint(w, QString("HELLO"));
+        displayHint(w, QString("III; IIX; LV - L - II")); //3 8 3
+    }
+    if(circ){
+        displayLockCirculaire(w);
     }
   }
   if (key == 65 && w->pc.x -1 > 0) { // LEFT
@@ -277,6 +305,7 @@ void move2(MainWindow *w, int key, Map &map) {
     TileWall *wall = dynamic_cast<TileWall *>(&tile);
     TileEmpty *empty = dynamic_cast<TileEmpty *>(&tile);
     TileHint *hint = dynamic_cast<TileHint*>(&tile);
+    TileLockCirculaire *circ = dynamic_cast<TileLockCirculaire*>(&tile);
     if (empty) {
       w->pc.x -= 1;
       w->GV->move(w->GV->x() + 50, w->GV->y());
@@ -287,6 +316,9 @@ void move2(MainWindow *w, int key, Map &map) {
     if(hint){
         displayHint(w, QString("HELLO"));
     }
+    if(circ){
+        displayLockCirculaire(w);
+    }
   }
   if (key == 68 && w->pc.x +1 < mapsize.x) { // RIGHT
     // TODO: add other TILE classes (door, entrance, ...)
@@ -296,6 +328,7 @@ void move2(MainWindow *w, int key, Map &map) {
     TileWall *wall = dynamic_cast<TileWall *>(&tile);
     TileEmpty *empty = dynamic_cast<TileEmpty *>(&tile);
     TileHint *hint = dynamic_cast<TileHint*>(&tile);
+    TileLockCirculaire *circ = dynamic_cast<TileLockCirculaire*>(&tile);
     if (empty) {
       w->pc.x += 1;
       w->GV->move(w->GV->x() - 50, w->GV->y());
@@ -306,6 +339,45 @@ void move2(MainWindow *w, int key, Map &map) {
     if(hint){
         displayHint(w, QString("HELLO"));
     }
+    if(circ){
+        displayLockCirculaire(w);
+    }
+  }
+  if(key == 74){
+      int currentValue = w->text->text().toInt();
+      if(currentValue+1 >= 14){
+          currentValue=-1;
+      }
+      displayHint(w, QString::number(currentValue + 1));
+  }
+  if(key==75){
+      int currentValue = w->text->text().toInt();
+      if(currentValue-1 < 0){
+          currentValue=15;
+      }
+      displayHint(w, QString::number(currentValue - 1));
+  }
+  if(key==73){
+      int currentValue = w->text->text().toInt();
+      if (curSelectrion < 3){
+          qDebug() << currentValue;
+          actualCombinaisonLockCirculaire[curSelectrion] = currentValue;
+          curSelectrion += 1;
+      }
+      else{
+          if (   actualCombinaisonLockCirculaire[0] == combinaisonCirculaire[0]
+              && actualCombinaisonLockCirculaire[1] == combinaisonCirculaire[1]
+              && actualCombinaisonLockCirculaire[2] == combinaisonCirculaire[2]
+              ){
+              qDebug() << "Correct";
+ //             w->requestHideHing();
+          }
+          else{
+              qDebug() << "NahBro";
+ //             w->requestHideHing();
+              curSelectrion = 0;
+          }
+      }
   }
   return;
 }
@@ -358,20 +430,7 @@ void displayLock4(MainWindow *w) {
   });
 }
 
-void displayLockCirculaire(MainWindow *w) {
-  // image of the circular lock
-  QLabel *label = w->createImageLabelFromPath(":/assets/images/LockCirculaire.jpg",
-                                              Size4{100, 100, 100, 100});
-  label->show();
-  // number of the circular lock
 
-  w->text->setText("00");
-  w->text->setGeometry(200, 200, 200, 200);
-  QObject::connect(w, &MainWindow::hideHint, w, [w, label]() {
-    w->text->hide();
-    label->hide();
-  });
-}
 
 void displayNumpad(MainWindow *w) {
   // image of the numpad

@@ -43,6 +43,10 @@ public:
 
     QLabel* text = new QLabel(this);
 
+    inline void requestHideHing(){
+        emit hideHint();
+    }
+
 public slots:
     inline void muon(){
         qDebug() << "muon";
