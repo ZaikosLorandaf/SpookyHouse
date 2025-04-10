@@ -370,11 +370,11 @@ void move2(MainWindow *w, int key, Map &map) {
               && actualCombinaisonLockCirculaire[2] == combinaisonCirculaire[2]
               ){
               qDebug() << "Correct";
- //             w->requestHideHing();
+              w->requestHideHing();
           }
           else{
               qDebug() << "NahBro";
- //             w->requestHideHing();
+              w->requestHideHing();
               curSelectrion = 0;
           }
       }
