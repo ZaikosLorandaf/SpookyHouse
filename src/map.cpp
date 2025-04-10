@@ -69,16 +69,16 @@ Map &Map::operator=(Map &&rval) {
 std::optional<std::reference_wrapper<Tile>> Map::get_tile(Vec2 coord) {
   if (coord.x >= this->map_size.x || coord.y >= this->map_size.y)
     return {};
-  auto iter =
-      std::equal_range(this->map_tiles.cbegin(), this->map_tiles.cend(), coord)
-          .first;
-  if (iter == this->map_tiles.cend())
-    return std::ref(Map::empty_tile);
-
-  auto maybe_tile = iter->get_tile();
-  if (maybe_tile)
-    return maybe_tile;
-  return std::ref(Map::wall_tile);
+  for (const auto &it : this->map_tiles) {
+    if (it.get_coord() == coord) {
+      auto maybe_tile = it.get_tile();
+      if (maybe_tile) {
+        return maybe_tile;
+      }
+      return std::ref(Map::wall_tile);
+    }
+  }
+  return std::ref(Map::empty_tile);
 }
 
 std::optional<std::reference_wrapper<Tile>> Map::get_tile(vec_comp x,

@@ -25,6 +25,10 @@ Vec2 &Vec2::operator=(const Vec2 &rhs) {
   return *this;
 }
 
+bool Vec2::operator==(const Vec2 &v) const {
+  return this->x == v.x && this->y == v.y;
+}
+
 Vec2 Vec2::operator*(vec_comp rhs) const {
   return Vec2(this->x * rhs, this->y * rhs);
 }
