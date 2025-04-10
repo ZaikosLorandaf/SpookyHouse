@@ -81,7 +81,20 @@ public slots:
         l->hide();
         delete(l);
     };
-    inline void accelerometre(float a){
+    inline void accelerometrex(int a){
+        qDebug()<<"test accelx working";
+
+    }
+    inline void accelerometrey(int a){
+        qDebug()<<"test accely working";
+
+    }
+    inline void accelerometrez(int a){
+        qDebug()<<"test accelz working";
+
+    }
+    inline void keypad(std::string a){
+        qDebug()<<a;
 
     }
 

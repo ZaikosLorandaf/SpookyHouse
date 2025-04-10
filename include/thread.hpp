@@ -78,7 +78,12 @@ signals:
   void numpad(QString car);
   void done(); // quand appli ferme
   void jumpscare();
-  void accelerometre(float a);
+  void accelerometrex(int a);
+  void accelerometrey(int a);
+  void accelerometrez(int a);
+  void keypad(std::string a);
+
+
 public slots:
   void stop() { running = false; }
   void doStuff();
@@ -111,7 +116,7 @@ inline void W_thread::doStuff() {
   while (running) {
 
     // Envoie message Arduino
-    j_msg_send["accelNeeded"] = 0;
+    j_msg_send["accelNeeded"] = 7;
     if (!SendToSerial(arduino, j_msg_send)) {
       // std::cerr << "Erreur lors de l'envoie du message. " << std::endl;
     } else {
@@ -166,7 +171,8 @@ inline void W_thread::doStuff() {
         // "")  << msg << endl;  // debug
         json jsonmsg;
         jsonmsg = json::parse(msg);
-        // std::cout << jsonmsg << std::endl;
+         //std::cout << jsonmsg << std::endl;
+        //qDebug()<< jsonmsg;
         if (!jsonmsg["bUp"].is_null()) {
           int bUpVal = jsonmsg["bUp"];
           if (bUpVal == 1) {
@@ -226,29 +232,42 @@ inline void W_thread::doStuff() {
           int potval = jsonmsg["pot"];
           // change potentiometer value
         }
-        if (!jsonmsg["accelX"].is_null()) {
-          int accelXval = jsonmsg["accelX"];
-          // change accelerometer X value
+        if (!jsonmsg["accX"].is_null()) {
+          int accelXval = jsonmsg["accX"];
+            if(accelXval == 1 || accelXval == 10){
+                emit accelerometrex(accelXval);
+
+            }          // change accelerometer X value
         }
-        if (!jsonmsg["accelY"].is_null()) {
-          int accelYval = jsonmsg["accelY"];
+        if (!jsonmsg["accY"].is_null()) {
+          int accelYval = jsonmsg["accY"];
+
+            if(accelYval == 1 || accelYval == 10){
+                emit accelerometrey(accelYval);
+
+            }
           // change accelerometer Y value
         }
-        if (!jsonmsg["accelZ"].is_null()) {
-          int accelZval = jsonmsg["accelZ"];
+        if (!jsonmsg["accZ"].is_null()) {
+          int accelZval = jsonmsg["accZ"];
+            if(accelZval == 1 || accelZval == 10){
+              emit accelerometrez(accelZval);
+
+            }
+
           // change accelerometer Z value
         }
         if (!jsonmsg["scream"].is_null()) {
           bool screamer = jsonmsg["scream"];
           if (screamer) {
-            // screamer appear on screen
+              emit jumpscare();
           }
         }
         if (!jsonmsg["kpd"].is_null()) {
           std::string keypadval = jsonmsg["kpd"];
-          if (keypadval == "1234") {
             // change keypad value
-          }
+              emit keypad(keypadval);
+
         }
       }
       // END NEW PRINT
