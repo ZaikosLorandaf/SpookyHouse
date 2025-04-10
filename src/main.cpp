@@ -241,7 +241,8 @@ void displayLockCirculaire(MainWindow *w) {
 
     w->text->setText("00");
     w->text->show();
-    w->text->setGeometry(200, 200, 200, 200);
+    w->text->setGeometry(200, 200, 500, 200);
+    w->text->setScaledContents(true);
     QObject::connect(w, &MainWindow::hideHint, w, [w, label]() {
         w->text->hide();
         label->hide();
