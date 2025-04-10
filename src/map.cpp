@@ -14,7 +14,6 @@
 Map::Map(const char *file_path, std::optional<const char *> from) {
   std::pair<Vec2, std::vector<TileCoord>> data_pair =
       Map::parse_file(file_path);
-  std::sort(data_pair.second.begin(), data_pair.second.end());
   data_pair.second.shrink_to_fit();
   this->map_tiles = std::move(data_pair.second);
   this->map_size = std::move(data_pair.first);
