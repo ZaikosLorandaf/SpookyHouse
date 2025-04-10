@@ -305,7 +305,7 @@ void createMap(MainWindow *w) {
   // character
 
   QLabel *a = w->createImageLabelFromPath(":/assets/images/Oscilloscope.webp",
-                                          Size4{600, 575, 50, 50});
+                                          Size4{600+100, 575-100, 50, 50});
   a->show();
 
   // darkness
@@ -399,7 +399,7 @@ int main(int argc, char *argv[]) {
       buttonPushed(p, w);
       fillScene2(w, niveau1, 0);
       w->GV->setScene(w->scenes[0]);
-      w->GV->setGeometry(-50, -200, 6000, 2000);
+      w->GV->setGeometry(-50+100, -200-100, 6000, 2000);
 
       w->GV->show();
   });
@@ -412,7 +412,7 @@ int main(int argc, char *argv[]) {
           buttonPushed(b, w);
           fillScene2(w, niveau1, 0);
           w->GV->setScene(w->scenes[0]);
-          w->GV->setGeometry(-50, -200, 6000, 2000);
+          w->GV->setGeometry(-50+100, -200-100, 6000, 2000);
 
           w->GV->show();
       }
