@@ -1,4 +1,4 @@
-MAP ! NULL NULL
+HINT ! Indice1.txt
 MAP E NULL NULL
 MAP 1 Etage2.txt Etage2.txt
 LOCK4 X CADENAE1 1024

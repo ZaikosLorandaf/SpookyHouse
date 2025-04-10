@@ -4,6 +4,7 @@
 #include "lockCirculaireTile.h"
 #include "map.hpp"
 #include "tile.hpp"
+#include "tile_hint.hpp"
 #include "tile_map_entrance.hpp"
 #include <cassert>
 #include <fstream>
@@ -70,6 +71,14 @@ std::pair<Vec2, std::vector<TileCoord>> Map::parse_file(const char *file_path) {
           lockCirculaire::parse_lock_digits(combination.c_str());
       lockCirculaire lc(parsed_combination.data(), std::move(id));
       auto ptr = std::make_unique<TileLockCirculaire>(std::move(lc));
+      v.emplace_back(std::make_pair(symbol_char, std::move(ptr)));
+    } else if (token == "HINT") {
+      std::string symbol, path;
+      ss >> symbol >> path;
+      const char symbol_char = symbol.c_str()[0];
+      path = "assets/hints/" + path;
+      std::string content = TileHint::read_hint_from_file(path.c_str());
+      auto ptr = std::make_unique<TileHint>(std::move(content));
       v.emplace_back(std::make_pair(symbol_char, std::move(ptr)));
     } else {
       assert(false);
