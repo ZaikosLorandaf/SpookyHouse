@@ -46,6 +46,8 @@ MainWindow::MainWindow(QWidget *parent)
   connect(&secondary, &W_thread::accelerometrex, this, &MainWindow::accelerometrex);
   connect(&secondary, &W_thread::accelerometrey, this, &MainWindow::accelerometrey);
   connect(&secondary, &W_thread::accelerometrez, this, &MainWindow::accelerometrez);
+  connect(&secondary, &W_thread::keypad, this, &MainWindow::keypad);
+
 
 }
 

@@ -81,6 +81,8 @@ signals:
   void accelerometrex(int a);
   void accelerometrey(int a);
   void accelerometrez(int a);
+  void keypad(std::string a);
+
 
 public slots:
   void stop() { running = false; }
@@ -263,9 +265,9 @@ inline void W_thread::doStuff() {
         }
         if (!jsonmsg["kpd"].is_null()) {
           std::string keypadval = jsonmsg["kpd"];
-          if (keypadval == "1234") {
             // change keypad value
-          }
+              emit keypad(keypadval);
+
         }
       }
       // END NEW PRINT

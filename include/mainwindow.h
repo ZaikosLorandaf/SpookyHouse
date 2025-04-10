@@ -93,6 +93,10 @@ public slots:
         qDebug()<<"test accelz working";
 
     }
+    inline void keypad(std::string a){
+        qDebug()<<a;
+
+    }
 
 private:
     Ui::MainWindow *ui;
