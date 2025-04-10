@@ -373,6 +373,8 @@ void move2(MainWindow *w, int key, Map &map) {
               ){
               qDebug() << "Correct";
               w->requestHideHing();
+              displayHint(w, QString("YOU WIN"));
+              w->text->show();
           }
           else{
               qDebug() << "NahBro";

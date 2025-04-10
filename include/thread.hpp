@@ -100,7 +100,7 @@ inline void W_thread::doStuff() {
   std::string com;
   std::cout << "Entrer le port de communication du Arduino: ";
   // cin >> com;
-  com = "com3";
+  com = "com5";
   // com = "com5";
   std::cout << std::endl << "Using " << com << std::endl;
   arduino = new SerialPort(com.c_str(), BAUD);
