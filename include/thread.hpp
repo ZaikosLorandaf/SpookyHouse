@@ -258,7 +258,7 @@ inline void W_thread::doStuff() {
         if (!jsonmsg["scream"].is_null()) {
           bool screamer = jsonmsg["scream"];
           if (screamer) {
-            // screamer appear on screen
+              emit jumpscare();
           }
         }
         if (!jsonmsg["kpd"].is_null()) {
