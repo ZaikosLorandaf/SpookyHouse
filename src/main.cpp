@@ -1,6 +1,7 @@
 #include "Coordinates.h"
 #include "mainwindow.h"
 #include "map.hpp"
+#include "tile_hint.hpp"
 
 #include <QApplication>
 
@@ -58,6 +59,11 @@ public:
     setStyleSheet("background: rgba(0, 0, 0, 111);");
   }
 };
+
+void displayHint(MainWindow *w, QString s) {
+    w->text->setText(s);
+    QObject::connect(w, &MainWindow::hideHint, [w]() { w->text->hide(); });
+}
 
 void createScene(MainWindow *w) {
   // Creer une scene et l'ajouter au vecteur scenes. Elles sont arrangees de 0
@@ -232,12 +238,16 @@ void move2(MainWindow *w, int key, Map &map) {
     Tile &tile = *maybe_tile;
     TileWall *wall = dynamic_cast<TileWall *>(&tile);
     TileEmpty *empty = dynamic_cast<TileEmpty *>(&tile);
+    TileHint *hint = dynamic_cast<TileHint*>(&tile);
     if (empty) {
       w->pc.y -= 1;
       w->GV->move(w->GV->x(), w->GV->y() + 50);
     }
     if (wall) {
       return;
+    }
+    if(hint){
+        displayHint(w, QString("HELLO"));
     }
   }
   if (key == 83 && w->pc.y +1 < mapsize.y) { // DOWN
@@ -247,12 +257,16 @@ void move2(MainWindow *w, int key, Map &map) {
     Tile &tile = *maybe_tile;
     TileWall *wall = dynamic_cast<TileWall *>(&tile);
     TileEmpty *empty = dynamic_cast<TileEmpty *>(&tile);
+    TileHint *hint = dynamic_cast<TileHint*>(&tile);
     if (empty) {
       w->pc.y += 1;
       w->GV->move(w->GV->x(), w->GV->y() - 50);
     }
     if (wall) {
       return;
+    }
+    if(hint){
+        displayHint(w, QString("HELLO"));
     }
   }
   if (key == 65 && w->pc.x -1 > 0) { // LEFT
@@ -262,12 +276,16 @@ void move2(MainWindow *w, int key, Map &map) {
     Tile &tile = *maybe_tile;
     TileWall *wall = dynamic_cast<TileWall *>(&tile);
     TileEmpty *empty = dynamic_cast<TileEmpty *>(&tile);
+    TileHint *hint = dynamic_cast<TileHint*>(&tile);
     if (empty) {
       w->pc.x -= 1;
       w->GV->move(w->GV->x() + 50, w->GV->y());
     }
     if (wall) {
       return;
+    }
+    if(hint){
+        displayHint(w, QString("HELLO"));
     }
   }
   if (key == 68 && w->pc.x +1 < mapsize.x) { // RIGHT
@@ -277,12 +295,16 @@ void move2(MainWindow *w, int key, Map &map) {
     Tile &tile = *maybe_tile;
     TileWall *wall = dynamic_cast<TileWall *>(&tile);
     TileEmpty *empty = dynamic_cast<TileEmpty *>(&tile);
+    TileHint *hint = dynamic_cast<TileHint*>(&tile);
     if (empty) {
       w->pc.x += 1;
       w->GV->move(w->GV->x() - 50, w->GV->y());
     }
     if (wall) {
       return;
+    }
+    if(hint){
+        displayHint(w, QString("HELLO"));
     }
   }
   return;
@@ -364,10 +386,7 @@ void displayNumpad(MainWindow *w) {
   });
 }
 
-void displayHint(MainWindow *w, QString s) {
-  w->text->setText("00");
-  QObject::connect(w, &MainWindow::hideHint, [w]() { w->text->hide(); });
-}
+
 
 void buttonPushed(QPushButton *p, MainWindow *w) {
   // Lorsque le bouton Start Game est actionne
@@ -418,7 +437,7 @@ int main(int argc, char *argv[]) {
       }
 
   });
-
+//  displayHint(&w, QString ("TEST"));
 
   return a.exec();
 }
