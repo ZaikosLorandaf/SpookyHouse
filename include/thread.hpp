@@ -169,6 +169,7 @@ inline void W_thread::doStuff() {
         if (!jsonmsg["bUp"].is_null()) {
           int bUpVal = jsonmsg["bUp"];
           if (bUpVal == 1) {
+              emit bouton(1);
             // button up
           } else {
             // stop button up
