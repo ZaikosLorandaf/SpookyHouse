@@ -209,11 +209,10 @@ inline void W_thread::doStuff() {
         if (!jsonmsg["joy"].is_null()) {
           int JoyVal = jsonmsg["joy"];
           if (JoyVal == 1) {
-            emit joystick(2);
-
+            emit joystick(0);
             // move up
           } else if (JoyVal == 2) {
-            emit joystick(0);
+            emit joystick(2);
 
             // move down
           } else if (JoyVal == 3) {

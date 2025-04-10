@@ -79,7 +79,7 @@ public slots:
         qDebug() << "numpad " << car;
     };
     inline void jumpscare(){
-        QLabel* l = createImageLabelFromPath(":/assets/images/Serge001.jpg", Size4 {0, 0, 2000, 1000});
+        QLabel* l = createImageLabelFromPath(":/assets/images/Serge001.jpg", Size4 {0, 0, 100, 100});
         l->show();
         QThread::msleep(1000);
         l->hide();
