@@ -299,7 +299,6 @@ void createMap(MainWindow *w) {
   //  fillScene(w, 0, temp, Coordinates{50, 50});
 
 
-
   switchRoom(w, 0);
   GV->show();
 
@@ -394,9 +393,16 @@ int main(int argc, char *argv[]) {
   createScene(&w);
 
   Map niveau1("assets/map/Etage1.txt");
-  fillScene2(&w, niveau1, 0);
 
-  QObject::connect(&w, &MainWindow::buttonClicked, buttonPushed);
+
+  QObject::connect(&w, &MainWindow::buttonClicked, [&niveau1](QPushButton* p, MainWindow* w){
+      buttonPushed(p, w);
+      fillScene2(w, niveau1, 0);
+      w->GV->setScene(w->scenes[0]);
+      w->GV->setGeometry(0, 0, 800, 600);
+
+      w->GV->show();
+  });
   QObject::connect(&w, &MainWindow::keyPressed, [&niveau1](MainWindow* w, int key){
       move2(w, key, niveau1);
   });
